@@ -18,4 +18,6 @@ Route::middleware('auth')->group(function (){
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
 
     Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
+
+    Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
 });

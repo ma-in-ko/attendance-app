@@ -20,12 +20,25 @@
         {{ now()->format('H:i') }}
     </div>
 
-    <form action="{{ route('attendance.clock-in') }}" method="POST">
+    @if ($status === '勤務外')
+        <form action="{{ route('attendance.clock-in') }}" method="POST">
+            @csrf
+            <button type="submit" class="attendance__button">
+                出勤
+            </button>
+        </form>
+    @endif
+
+    @if($status === '出勤中')
+    <form action="{{ route('attendance.clock-out') }}" method="POST">
         @csrf
-        <button class="attendance__button">
-            出勤
-        </button>
+        <button type="submit" class="attendance__button">退勤</button>
     </form>
+    @endif
+
+    @if ($status === '退勤済')
+        <p>おつかれさまでした</p>
+    @endif    
 
 </div>
 @endsection
