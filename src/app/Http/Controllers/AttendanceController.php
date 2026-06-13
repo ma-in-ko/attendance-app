@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRecord;
 use App\Models\BreakTime;
@@ -104,6 +105,24 @@ class AttendanceController extends Controller
         ]);
 
         return redirect()->route('attendance.create');
+    }
+
+    public function index(Request $request)
+    {
+        $currentMonth = $request->month
+            ?Carbon::parse($request->month)
+            :now();
+
+        $attendances = AttendanceRecord::with('breakTimes')->where('user_id', auth()->id())
+        ->whereYear('work_date', $currentMonth->year)
+        ->whereMonth('work_date', $currentMonth->month)
+        ->orderBy('work_date')
+        ->get();
+
+        return view('attendance.index', compact(
+                'attendances',
+                'currentMonth',
+            ));
     }
     
 }

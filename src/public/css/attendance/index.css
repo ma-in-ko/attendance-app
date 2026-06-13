@@ -1,0 +1,57 @@
+.attendance {
+    display: flex;
+    width: 900px;    
+    margin: 80px auto;
+    flex-direction: column;
+}
+
+.attendance h1 {
+    border-left: 6px solid #000;
+    padding-left: 12px;
+    font-size: 28px;
+}
+
+.month-nav {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 20px;
+    padding: 16px 24px;
+    margin: 30px 0;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.month-nav a {
+    text-decoration: none;
+    color: #2e2d2d;
+}
+
+.month-nav span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #fff;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,
+td {
+    border-bottom: 1px solid #c7c7c7;
+    padding: 16px;
+    text-align: center;
+    color: #2e2d2d
+}
+
+td a {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+
