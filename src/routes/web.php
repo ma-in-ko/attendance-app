@@ -27,4 +27,6 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.index');
 
+    Route::get('/attendance/detail/{attendance}', [AttendanceController::class, 'show'])->name('attendance.show');
+
 });

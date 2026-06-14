@@ -15,7 +15,7 @@
             ← 前月
         </a>
 
-        <span class="nonth-nav__current">
+        <span class="month-nav__current">
             📅{{ $currentMonth -> format('Y/m') }}
         </span>
 
@@ -96,7 +96,9 @@
                 <td>{{ $breakTimeFormatted }}</td>
                 <td>{{ $workTimeFormatted }}</td>
                 <td>
-                    <a href="#">詳細</a>
+                    <a href="{{ route('attendance.show', $attendance->id) }}">
+                        詳細
+                    </a>
                 </td>
             </tr>
             @endforeach

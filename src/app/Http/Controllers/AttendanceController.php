@@ -124,6 +124,11 @@ class AttendanceController extends Controller
                 'currentMonth',
             ));
     }
+
+    public function show(AttendanceRecord $attendance)
+    {
+        return view ('attendance.show', compact('attendance'));
+    }
     
 }
 
