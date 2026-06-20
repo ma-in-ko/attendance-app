@@ -59,11 +59,23 @@ td {
 .time {
     display: flex;
     justify-content: center;
-    text-align: center;
+    align-items: center;
     border: 1px solid #c7c7c7;
     height: 20px;
     width: 80px;
 
+}
+
+.note {
+    border: 1px solid #c7c7c7;
+    height: 40px;
+    width: 250px;
+    resize: none;
+}
+
+.pending {
+    color: red;
+    font-weight: bold;
 }
 
 .attendance__button {
@@ -73,14 +85,12 @@ td {
 
 .attendance__button button {
     margin-top: 20px;
-    padding: 7px 25px;
+    padding: 10px 30px;
     background: #000;
     color: #fff;
     border-radius: 3px;
 }
 
-.note {
-    border: 1px solid #c7c7c7;
-    height: 60px;
-    width: 250px;
+.error {
+    color: red;
 }

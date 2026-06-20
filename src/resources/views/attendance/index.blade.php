@@ -91,8 +91,14 @@
                 <td>{{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}
                     ({{ ['日','月','火','水','木','金','土'][\Carbon\Carbon::parse($attendance->work_date)->dayOfWeek] }})
                 </td>
-                <td>{{ \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}</td>
-                <td>{{ \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') }}</td>
+                <td>{{  $attendance->clock_in
+                        ?\Carbon\Carbon::parse($attendance->clock_in)->format('H:i')
+                        : ''
+                    }}</td>
+                <td>{{  $attendance->clock_out
+                        ?\Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
+                        : '' 
+                    }}</td>
                 <td>{{ $breakTimeFormatted }}</td>
                 <td>{{ $workTimeFormatted }}</td>
                 <td>

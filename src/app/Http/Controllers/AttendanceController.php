@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRecord;
+use App\Models\AttendanceCorrectionRequest;
 use App\Models\BreakTime;
+use App\Http\Requests\AttendanceRequest;
 
 class AttendanceController extends Controller
 {
@@ -127,8 +129,31 @@ class AttendanceController extends Controller
 
     public function show(AttendanceRecord $attendance)
     {
-        return view ('attendance.show', compact('attendance'));
-    }
-    
-}
+        $pendingRequest = AttendanceCorrectionRequest::where(
+            'attendance_record_id', 
+            $attendance->id
+        )
+        ->where('is_approved', false)
+        ->exists();
 
+        return view ('attendance.show', compact(
+            'attendance',
+            'pendingRequest'
+        ));
+    }
+
+    public function store(
+        AttendanceRecord $attendance,
+        AttendanceRequest $request
+    )
+    {
+        AttendanceCorrectionRequest::create([
+            'attendance_record_id' => $attendance->id,
+            'requested_clock_in' => $attendance->work_date . ' ' . $request->requested_clock_in,
+            'requested_clock_out' => $attendance->work_date . ' ' . $request->requested_clock_out,
+            'reason' => $request->reason,
+        ]);
+
+        return redirect()->back();
+    }
+}
