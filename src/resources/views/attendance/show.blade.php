@@ -53,11 +53,13 @@
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_out"
-                                value="{{ Carbon\Carbon::parse($attendance->clock_out)->format('H:i') }}"
+                                value="{{$attendance->clock_out
+                                 ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
+                                  : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
                         </div>
                         @if ($errors->has('requested_clock_in') || $errors->has('requested_clock_out'))
-                            <p class="error">出勤時間もしくは退勤時間が不適切な値です</p>
+                        <p class="error">出勤時間もしくは退勤時間が不適切な値です</p>
                         @endif
                     </td>
                 </tr>
@@ -79,7 +81,8 @@
                                 type="time"
                                 name="breaks[0][break_end]"
                                 value="{{ isset($attendance->breakTimes[0])
-                                ?Carbon\Carbon::parse($attendance->breakTimes[0]->break_end)->format('H:i')
+                                && $attendance->breakTimes[0]->break_end
+                                ? Carbon\Carbon::parse($attendance->breakTimes[0]->break_end)->format('H:i')
                                 : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
                         </div>
@@ -103,6 +106,7 @@
                                 type="time"
                                 name="breaks[1][break_end]"
                                 value="{{ isset($attendance->breakTimes[1])
+                                 && $attendance->breakTimes[1]->break_end
                                 ? Carbon\Carbon::parse($attendance->breakTimes[1]->break_end)->format('H:i')
                                 : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
@@ -115,8 +119,7 @@
                         <textarea
                             class="detail__content note"
                             name="reason"
-                            {{ $pendingRequest ? 'disabled' : '' }}
-                            >{{ $attendance->note }}</textarea>
+                            {{ $pendingRequest ? 'disabled' : '' }}>{{ $attendance->note }}</textarea>
                         @error('reason')
                         <p class="error">{{$message }}</p>
                         @enderror
@@ -127,9 +130,9 @@
 
         <div class="attendance__button">
             @if($pendingRequest)
-                <p class="pending">*承認待ちのため修正はできません</p>
+            <p class="pending">*承認待ちのため修正はできません</p>
             @else
-                <button type="submit">修正</button>
+            <button type="submit">修正</button>
             @endif
         </div>
     </form>

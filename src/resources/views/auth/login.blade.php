@@ -9,7 +9,7 @@
 <div class="auth">
     <h1 class="auth__title">ログイン</h1>
 
-    <form action="{{ route('login') }}" method="POST">
+    <form action="{{ route('login') }}" method="POST" novalidate>
         @csrf
 
 
