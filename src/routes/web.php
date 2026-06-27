@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AdminAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +15,16 @@ use App\Http\Controllers\AttendanceController;
 |
 */
 
-Route::get('/', function () {
-    return redirect('/login');
-});
 
 Route::get('/admin/login', function () {
     return view('admin.login');
 });
 
+Route::post('/admin/login', [AdminAuthController::class, 'login'])
+->name('admin.login');
 
 Route::middleware('auth')->group(function (){
+
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
 
     Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
@@ -41,3 +42,11 @@ Route::middleware('auth')->group(function (){
     Route::post('/attendance/{attendance}/request',[AttendanceController::class, 'store'])->name('attendance.request');
 
     });
+
+Route::middleware(['auth', 'admin'])->group(function () {
+
+    Route::get('/admin/attendance/list', function () {
+            return '管理者ログイン成功！';
+    });
+
+});

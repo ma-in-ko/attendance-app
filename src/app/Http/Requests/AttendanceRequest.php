@@ -36,7 +36,7 @@ class AttendanceRequest extends FormRequest
         return[
             'requested_clock_in.before' => '出勤時間もしくは退勤時間が不適切な値です',
             'requested_clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
-            'reason.required' => '備考を入力してください',   
+            'reason.required' => '備考を入力してください',
         ];
     }
 }
