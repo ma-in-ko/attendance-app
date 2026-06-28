@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminAttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,8 +46,6 @@ Route::middleware('auth')->group(function (){
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
-    Route::get('/admin/attendance/list', function () {
-            return '管理者ログイン成功！';
-    });
+    Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.list');
 
 });
