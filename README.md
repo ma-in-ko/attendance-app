@@ -103,7 +103,7 @@ FormRequestを使用してバリデーションを実装しています。
 * phpMyAdmin： http://localhost:8080
 
 ## ER図
-![ER図](docs/ER図.png)
+![ER図](docs/ER-drawio.png)
 
 ## 工夫した点
 * Laravel Fortifyを利用して認証機能を実装
