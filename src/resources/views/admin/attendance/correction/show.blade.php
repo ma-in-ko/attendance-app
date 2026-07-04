@@ -8,7 +8,7 @@
 <div class="correction-detail">
     <h1>勤怠詳細</h1>
 
-    <form action="#" method="POST">
+    <form action="{{ route('admin.request.approve', $attendanceCorrectionRequest->id) }}" method="POST">
         @csrf
 
         <table class="correction-detail__table">
