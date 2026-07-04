@@ -26,6 +26,10 @@ Route::get('/admin/login', function () {
 Route::post('/admin/login', [AdminAuthController::class, 'login'])
 ->name('admin.login');
 
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 Route::middleware('auth')->group(function (){
 
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
