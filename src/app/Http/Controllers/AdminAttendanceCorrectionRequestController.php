@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\BreakTime;
 
 class AdminAttendanceCorrectionRequestController extends Controller
 {
@@ -28,7 +29,10 @@ class AdminAttendanceCorrectionRequestController extends Controller
     public function show($id)
     {
         $attendanceCorrectionRequest =
-            AttendanceCorrectionRequest::findOrFail($id);
+            AttendanceCorrectionRequest::with(
+                'attendanceCorrectionBreaks',
+                'attendaneRecord.user'
+            )->findOrFail($id);
 
         return view('admin.attendance.correction.show', compact('attendanceCorrectionRequest')
         );
@@ -38,7 +42,9 @@ class AdminAttendanceCorrectionRequestController extends Controller
     {
 
         $attendanceCorrectionRequest =
-            AttendanceCorrectionRequest::findOrFail($id);
+            AttendanceCorrectionRequest::with(
+                'attendanceCorrectionBreaks'
+            )->findOrFail($id);
 
         $attendanceRecord = $attendanceCorrectionRequest->attendanceRecord;
 
@@ -48,6 +54,27 @@ class AdminAttendanceCorrectionRequestController extends Controller
             'note' => $attendanceCorrectionRequest->reason,
         ]);
 
+        //既存休憩削除
+        $attendanceRecord->breakTimes()->delete();
+
+        //修正申請された休憩を登録
+        foreach (
+            $attendanceCorrectionRequest->attendanceCorrectionBreaks 
+            as $break
+        ) {
+            BreakTime::create([
+                'attendance_record_id'
+                    => $attendanceRecord->id,
+
+                'break_start'
+                    =>$break->requested_break_start,
+
+                'break_end'
+                    => $break->requested_break_end,
+            ]);
+        }
+
+        //承認済に変更
         $attendanceCorrectionRequest->update([
             'is_approved' => true,
             'approved_at' => Carbon::now()

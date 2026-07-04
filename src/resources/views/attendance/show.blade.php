@@ -63,56 +63,68 @@
                         @endif
                     </td>
                 </tr>
+
+                @foreach($attendance->breakTimes as $index => $breakTime)
+
                 <tr>
-                    <th>休憩</th>
+                    <th>
+                        休憩{{ $index === 0 ? '' : $index + 1 }}
+                    </th>
+
                     <td>
                         <div class="detail__content">
+
                             <input class="detail__box time"
                                 type="time"
-                                name="breaks[0][break_start]"
-                                value="{{ isset($attendance->breakTimes[0])
-                                ?Carbon\Carbon::parse($attendance->breakTimes[0]->break_start)->format('H:i')
-                                : '' }}"
+                                name="breaks[{{ $index }}][break_start]"
+                                value="{{ Carbon\Carbon::parse($breakTime->break_start)->format('H:i') }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
-                            <span class=" detail__separator">
-                                ～
-                            </span>
-                            <input class="detail__box time"
-                                type="time"
-                                name="breaks[0][break_end]"
-                                value="{{ isset($attendance->breakTimes[0])
-                                && $attendance->breakTimes[0]->break_end
-                                ? Carbon\Carbon::parse($attendance->breakTimes[0]->break_end)->format('H:i')
-                                : '' }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>休憩2</th>
-                    <td>
-                        <div class="detail__content">
-                            <input class="detail__box time"
-                                type="time"
-                                name="breaks[1][break_start]"
-                                value="{{ isset($attendance->breakTimes[1])
-                                ? Carbon\Carbon::parse($attendance->breakTimes[1]->break_start)->format('H:i')
-                                : '' }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+
                             <span class="detail__separator">
                                 ～
                             </span>
+
                             <input class="detail__box time"
                                 type="time"
-                                name="breaks[1][break_end]"
-                                value="{{ isset($attendance->breakTimes[1])
-                                && $attendance->breakTimes[1]->break_end
-                                ? Carbon\Carbon::parse($attendance->breakTimes[1]->break_end)->format('H:i')
-                                : '' }}"
+                                name="breaks[{{ $index }}][break_end]"
+                                value="{{ $breakTime->break_end
+                    ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
+                    : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
+
                         </div>
                     </td>
                 </tr>
+
+                @endforeach
+
+                <tr>
+                    <th>
+                        休憩{{ $attendance->breakTimes->count() + 1 }}
+                    </th>
+
+                    <td>
+                        <div class="detail__content">
+
+                            <input class="detail__box time"
+                                type="time"
+                                name="breaks[{{ $attendance->breakTimes->count() }}][break_start]"
+                                {{ $pendingRequest ? 'disabled' : '' }}>
+
+                            <span class="detail__separator">
+                                ～
+                            </span>
+
+                            <input class="detail__box time"
+                                type="time"
+                                name="breaks[{{ $attendance->breakTimes->count() }}][break_end]"
+                                {{ $pendingRequest ? 'disabled' : '' }}>
+
+                        </div>
+                    </td>
+                </tr>
+
+
                 <tr>
                     <th>備考</th>
                     <td>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRecord;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\AttendanceCorrectionBreak;
 use App\Models\BreakTime;
 use App\Http\Requests\AttendanceRequest;
 
@@ -147,12 +148,34 @@ class AttendanceController extends Controller
         AttendanceRequest $request
     )
     {
-        AttendanceCorrectionRequest::create([
+        $attendanceCorrectionRequest = AttendanceCorrectionRequest::create([
             'attendance_record_id' => $attendance->id,
             'requested_clock_in' => $attendance->work_date . ' ' . $request->requested_clock_in,
             'requested_clock_out' => $attendance->work_date . ' ' . $request->requested_clock_out,
             'reason' => $request->reason,
         ]);
+
+        foreach ($request->breaks as $break)
+            {
+                if ( 
+                    empty($break['break_start'])
+                    && empty($break['break_end'])
+                ){
+                    continue;
+                }
+
+                AttendanceCorrectionBreak::create([
+                    'attendance_correction_request_id'
+                        => $attendanceCorrectionRequest->id,
+
+                    'requested_break_start'
+                        => $attendance->work_date . ' ' . $break['break_start'],
+
+                    'requested_break_end'
+                        =>$attendance->work_date . ' ' . $break['break_end'],
+
+                ]);
+            }
 
         return redirect()->back();
     }

@@ -57,19 +57,32 @@
                     </td>
                 </tr>
 
+                @foreach($attendanceCorrectionRequest->attendanceCorrectionBreaks as $index => $break)
+
                 <tr>
-                    <th>休憩</th>
+                    <th>
+                        休憩{{ $index === 0 ? '' : $index + 1 }}
+                    </th>
                     <td>
-                        {{-- AttendanceCorrectionBreakから取得 --}}
+                        <div class="correction-detail__content">
+                            <span class="correction-detail__time">
+                                {{ Carbon\Carbon::parse($break->requested_break_start)->format('H:i') }}
+                            </span>
+
+                            <span class="correction-detail__separator">
+                                ～
+                            </span>
+
+                            <span class="correction-detail__time">
+                                {{ Carbon\Carbon::parse($break->requested_break_end)->format('H:i') }}
+                            </span>
+                        </div>
                     </td>
                 </tr>
 
+                @endforeach
+
                 <tr>
-                    <th>休憩2</th>
-                    <td>
-                        {{-- AttendanceCorrectionBreakから取得 --}}
-                    </td>
-                </tr>
 
                 <tr>
                     <th>備考</th>

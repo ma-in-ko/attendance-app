@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceCorrectionRequestController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminStaffController;
@@ -46,6 +47,20 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/attendance/detail/{attendance}', [AttendanceController::class, 'show'])->name('attendance.show');
 
+    Route::get('/stamp_correction_request/list', function () {
+
+        if (auth()->user()->admin_status) {
+
+            return app(
+                AdminAttendanceCorrectionRequestController::class
+            )->index(request());
+        }
+
+        return app(
+            AttendanceCorrectionRequestController::class
+        )->index(request());
+    })->name('request.index');
+
     Route::post('/attendance/{attendance}/request',[AttendanceController::class, 'store'])->name('attendance.request');
 
     });
@@ -65,9 +80,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/attendance/staff/{user}', [AdminStaffController::class, 'attendance'])
     ->name('admin.staff.attendance');
-
-    Route::get('/stamp_correction_request/list', [AdminAttendanceCorrectionRequestController::class, 'index'])
-    ->name('admin.request.index');
 
     Route::get('/stamp_correction_request/approve/{id}', [AdminAttendanceCorrectionRequestController::class, 'show'])
     ->name('admin.request.show');

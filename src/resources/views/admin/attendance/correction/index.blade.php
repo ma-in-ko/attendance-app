@@ -9,10 +9,10 @@
     <h1>申請一覧</h1>
 
     <div class="tab">
-        <a href="{{ route('admin.request.index', ['tab' => 'pending']) }}">
+        <a href="{{ route('request.index', ['tab' => 'pending']) }}">
             承認待ち
         </a>
-        <a href="{{ route('admin.request.index', ['tab' => 'approved']) }}">
+        <a href="{{ route('request.index', ['tab' => 'approved']) }}">
             承認済み
         </a>
     </div>
