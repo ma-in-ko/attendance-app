@@ -1,31 +1,36 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/admin/attendance/index.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/staff/attendance.css') }}">
 @endsection
 
 @section('content')
 
-<div class="attendance">
-    <h1>{{ $currentDay -> format('Y年m月d日') }}</h1>
+<div class="staff-attendance">
+    <h1>{{ $user->name }}さんの勤怠</h1>
 
-    <div class="date-nav">
-        <a href="{{ route('admin.attendance.list', ['day' => $currentDay->copy()->subDay()->format('Y-m-d')]) }}">
-            ←前日
+    <div class="month-nav">
+        <a href="{{ route('admin.staff.attendance', [
+            'user' => $user->id,
+            'month' => $currentMonth->copy()->subMonth()->format('Y-m') ]) }}">
+            ← 前月
         </a>
-        <span class="nav__current">
-            📅{{ $currentDay -> format('Y/m/d') }}
+
+        <span class="month-nav__current">
+            📅{{ $currentMonth -> format('Y/m') }}
         </span>
 
-        <a href="{{ route('admin.attendance.list', ['day' => $currentDay->copy()->addDay()->format('Y-m-d')]) }}">
-            翌日→
+        <a href=" {{ route('admin.staff.attendance', [
+            'user' => $user->id,
+            'month' => $currentMonth->copy()->addMonth()->format('Y-m') ]) }}">
+            翌月 →
         </a>
     </div>
 
-    <table class="attendance-table">
+    <table>
         <thead>
             <tr>
-                <th>名前</th>
+                <th>日付</th>
                 <th>出勤</th>
                 <th>退勤</th>
                 <th>休憩</th>
@@ -85,8 +90,8 @@
             @endphp
 
             <tr>
-                <td>
-                        {{$attendance->user->name }}
+                <td>{{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}
+                    ({{ ['日','月','火','水','木','金','土'][\Carbon\Carbon::parse($attendance->work_date)->dayOfWeek] }})
                 </td>
                 <td>{{ $attendance->clock_in
                         ?\Carbon\Carbon::parse($attendance->clock_in)->format('H:i')
@@ -99,7 +104,7 @@
                 <td>{{ $breakTimeFormatted }}</td>
                 <td>{{ $workTimeFormatted }}</td>
                 <td>
-                    <a href="{{ route('admin.attendance.detail', $attendance) }}">
+                    <a href="#">
                         詳細
                     </a>
                 </td>

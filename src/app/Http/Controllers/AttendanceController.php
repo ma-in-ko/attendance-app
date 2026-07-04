@@ -73,7 +73,7 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.create');
     }
 
-    public function breakStart() 
+    public function breakStart()
     {
             $attendance = AttendanceRecord::where('user_id', auth()->id())
             ->whereDate('work_date', today())
@@ -92,7 +92,7 @@ class AttendanceController extends Controller
     }
 
     public function breakEnd()
-    {  
+    {
         $attendance = AttendanceRecord::where('user_id', auth()->id())
         ->whereDate('work_date', today())
         ->first();
@@ -130,7 +130,7 @@ class AttendanceController extends Controller
     public function show(AttendanceRecord $attendance)
     {
         $pendingRequest = AttendanceCorrectionRequest::where(
-            'attendance_record_id', 
+            'attendance_record_id',
             $attendance->id
         )
         ->where('is_approved', false)

@@ -1,23 +1,24 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/attendance/show.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/attendance/detail.css') }}">
 @endsection
 
 @section('content')
-<div class="attendance">
+<div class="admin-attendance">
     <h1>勤怠詳細</h1>
 
-    <form action="{{ route('attendance.request', $attendance) }}" method="POST">
+    <form action="{{ route('admin.attendance.update', $attendance) }}" method="POST">
         @csrf
+        @method('PUT')
 
-        <table class="attendance__detail">
+        <table class="admin-attendance__detail">
 
             <tbody>
                 <tr>
                     <th>名前</th>
                     <td>
-                        <div class="detail__content">
+                        <div class="admin-detail__content">
                             <span>
                                 {{ $attendance->user->name }}
                             </span>
@@ -44,7 +45,7 @@
                         <div class="detail__content">
                             <input class="detail__box time"
                                 type="time"
-                                name="requested_clock_in"
+                                name="clock_in"
                                 value="{{ Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
                             <span class="detail__separator">
@@ -52,13 +53,13 @@
                             </span>
                             <input class="detail__box time"
                                 type="time"
-                                name="requested_clock_out"
+                                name="clock_out"
                                 value="{{$attendance->clock_out
                                 ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
                                 : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
                         </div>
-                        @if ($errors->has('requested_clock_in') || $errors->has('requested_clock_out'))
+                        @if ($errors->has('clock_in') || $errors->has('clock_out'))
                         <p class="error">出勤時間もしくは退勤時間が不適切な値です</p>
                         @endif
                     </td>
@@ -74,7 +75,7 @@
                                 ?Carbon\Carbon::parse($attendance->breakTimes[0]->break_start)->format('H:i')
                                 : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
-                            <span class=" detail__separator">
+                            <span class="detail__separator">
                                 ～
                             </span>
                             <input class="detail__box time"
@@ -118,9 +119,9 @@
                     <td>
                         <textarea
                             class="detail__content note"
-                            name="reason"
+                            name="note"
                             {{ $pendingRequest ? 'disabled' : '' }}>{{ $attendance->note }}</textarea>
-                        @error('reason')
+                        @error('note')
                         <p class="error">{{$message }}</p>
                         @enderror
                     </td>

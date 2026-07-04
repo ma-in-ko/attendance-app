@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\AdminStaffController;
+use App\Http\Controllers\AdminAttendanceCorrectionRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,4 +50,21 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.list');
 
+    Route::get('/admin/attendance/{attendance}', [AdminAttendanceController::class, 'detail'])
+    ->name('admin.attendance.detail');
+
+    Route::put('/admin/attendance/{attendance}', [AdminAttendanceController::class, 'update'])
+        ->name('admin.attendance.update');
+
+    Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])
+    ->name('admin.staff.list');
+
+    Route::get('/admin/attendance/staff/{user}', [AdminStaffController::class, 'attendance'])
+    ->name('admin.staff.attendance');
+
+    Route::get('/stamp_correction_request/list', [AdminAttendanceCorrectionRequestController::class, 'index'])
+    ->name('admin.request.index');
+
+    Route::get('/stamp_correction_request/approve/{attendanceCorrectionRequest}', [AdminAttendanceCorrectionRequestController::class, 'show'])
+    ->name('admin.request.show');
 });
