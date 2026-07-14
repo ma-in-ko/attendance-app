@@ -104,7 +104,7 @@
                 <td>{{ $breakTimeFormatted }}</td>
                 <td>{{ $workTimeFormatted }}</td>
                 <td>
-                    <a href="#">
+                    <a href="{{ route('admin.attendance.detail', $attendance) }}">
                         詳細
                     </a>
                 </td>

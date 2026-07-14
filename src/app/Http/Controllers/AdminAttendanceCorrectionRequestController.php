@@ -31,7 +31,7 @@ class AdminAttendanceCorrectionRequestController extends Controller
         $attendanceCorrectionRequest =
             AttendanceCorrectionRequest::with(
                 'attendanceCorrectionBreaks',
-                'attendaneRecord.user'
+                'attendanceRecord.user'
             )->findOrFail($id);
 
         return view('admin.attendance.correction.show', compact('attendanceCorrectionRequest')
@@ -67,10 +67,10 @@ class AdminAttendanceCorrectionRequestController extends Controller
                     => $attendanceRecord->id,
 
                 'break_start'
-                    =>$break->requested_break_start,
+                    =>$break->break_start,
 
                 'break_end'
-                    => $break->requested_break_end,
+                    => $break->break_end,
             ]);
         }
 
@@ -80,7 +80,7 @@ class AdminAttendanceCorrectionRequestController extends Controller
             'approved_at' => Carbon::now()
         ]);
 
-        return redirect()->route('admin.request.index');
+        return redirect()->route('request.index');
 
     }
 

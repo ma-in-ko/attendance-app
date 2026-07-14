@@ -66,7 +66,7 @@
                     <td>
                         <div class="correction-detail__content">
                             <span class="correction-detail__time">
-                                {{ Carbon\Carbon::parse($break->requested_break_start)->format('H:i') }}
+                                {{ Carbon\Carbon::parse($break->break_start)->format('H:i') }}
                             </span>
 
                             <span class="correction-detail__separator">
@@ -74,7 +74,7 @@
                             </span>
 
                             <span class="correction-detail__time">
-                                {{ Carbon\Carbon::parse($break->requested_break_end)->format('H:i') }}
+                                {{ Carbon\Carbon::parse($break->break_end)->format('H:i') }}
                             </span>
                         </div>
                     </td>
@@ -97,7 +97,19 @@
         </table>
 
         <div class="correction-detail__button">
-            <button type="submit">承認</button>
+            @if($attendanceCorrectionRequest->is_approved)
+
+            <button class="approved-button" disabled>
+                承認済み
+            </button>
+
+            @else
+
+            <button type="submit">
+                承認
+            </button>
+
+            @endif
         </div>
 
     </form>

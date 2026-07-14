@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
 
-class AttendanceRequest extends FormRequest
+class AdminAttendanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,11 @@ class AttendanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'requested_clock_in' => ['required'],
+            'clock_in' => ['required'],
 
-            'requested_clock_out' => [
+            'clock_out' => [
                 'required',
-                'after:requested_clock_in',
+                'after:clock_in',
             ],
 
             'breaks.*.break_start' => [
@@ -38,7 +38,10 @@ class AttendanceRequest extends FormRequest
                 'nullable',
             ],
 
-            'reason' => ['required', 'string'],
+            'note' => [
+                'required',
+                'string',
+            ],
         ];
     }
 
@@ -46,8 +49,8 @@ class AttendanceRequest extends FormRequest
     {
         $validator->after(function ($validator) {
 
-            $clockIn = $this->requested_clock_in;
-            $clockOut = $this->requested_clock_out;
+            $clockIn = $this->clock_in;
+            $clockOut = $this->clock_out;
 
             if (!$clockIn || !$clockOut) {
                 return;
@@ -62,7 +65,7 @@ class AttendanceRequest extends FormRequest
                     continue;
                 }
 
-                // 休憩開始が勤務開始前
+                //休憩開始 < 出勤
                 if (
                     !empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
@@ -74,7 +77,8 @@ class AttendanceRequest extends FormRequest
                     );
                 }
 
-                // 休憩開始が勤務終了後
+
+                //休憩開始 > 退勤
                 if (
                     !empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
@@ -82,11 +86,11 @@ class AttendanceRequest extends FormRequest
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_start",
-                        '休憩時間が不適切な値です。'
+                        '休憩時間が不適切な値です'
                     );
                 }
 
-                // 休憩終了が勤務終了後
+                //休憩終了 > 退勤
                 if (
                     !empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
@@ -94,11 +98,11 @@ class AttendanceRequest extends FormRequest
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
-                        '休憩時間が不適切な値です'
+                        '休憩時間もしくは退勤時間が不適切な値です'
                     );
                 }
 
-                //休憩終了が休憩開始前
+                //休憩終了 < 休憩開始
                 if (
                     !empty($break['break_start']) &&
                     !empty($break['break_end']) &&
@@ -107,7 +111,7 @@ class AttendanceRequest extends FormRequest
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
-                        '休憩時間が不適切な値です'
+                        '休憩時間もしくは退勤時間が不適切な値です'
                     );
                 }
             }
@@ -116,12 +120,19 @@ class AttendanceRequest extends FormRequest
 
     public function messages(): array
     {
-        return[
-            'requested_clock_in.required' => '出勤時間を入力してください',
-            'requested_clock_out.required' => '退勤時間を入力してください',
-            'requested_clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
-            'breaks.*.break_end.after' => '休憩時間もしくは退勤時間が不適切な値です',
-            'reason.required' => '備考を記入してください',
+        return [
+
+            'clock_in.required'
+            => '出勤時間を入力してください',
+
+            'clock_out.required'
+            => '退勤時間を入力してください',
+
+            'clock_out.after'
+            => '出勤時間もしくは退勤時間が不適切な値です',
+
+            'note.required'
+            => '備考を記入してください',
         ];
     }
 }

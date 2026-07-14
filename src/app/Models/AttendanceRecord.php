@@ -20,6 +20,10 @@ class AttendanceRecord extends Model
         'note',
     ];
 
+    protected $casts = [
+        'work_date' => 'date',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

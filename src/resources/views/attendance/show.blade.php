@@ -41,7 +41,7 @@
                 <tr>
                     <th>出勤・退勤</th>
                     <td>
-                        <div class="detail__content">
+                        <div class="time__content">
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_in"
@@ -72,12 +72,12 @@
                     </th>
 
                     <td>
-                        <div class="detail__content">
+                        <div class="time__content">
 
                             <input class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $index }}][break_start]"
-                                value="{{ Carbon\Carbon::parse($breakTime->break_start)->format('H:i') }}"
+                                value="{{ $breakTime->break_start ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i') : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
 
                             <span class="detail__separator">
@@ -88,39 +88,64 @@
                                 type="time"
                                 name="breaks[{{ $index }}][break_end]"
                                 value="{{ $breakTime->break_end
-                    ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
-                    : '' }}"
+                                ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
+                                : '' }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
 
                         </div>
+                        @if (
+                        $errors->has("breaks.$index.break_start") ||
+                        $errors->has("breaks.$index.break_end")
+                        )
+                        <p class="error">
+                            {{ $errors->first("breaks.$index.break_start") ?: $errors->first("breaks.$index.break_end") }}
+                        </p>
+                        @endif
                     </td>
                 </tr>
 
                 @endforeach
 
+                @php
+                $newIndex = $attendance->breakTimes->count();
+                @endphp
+
                 <tr>
                     <th>
-                        休憩{{ $attendance->breakTimes->count() + 1 }}
+                        休憩{{ $newIndex + 1 }}
                     </th>
 
                     <td>
-                        <div class="detail__content">
+                        <div class="time__content">
 
-                            <input class="detail__box time"
+                            <input
+                                class="detail__box time"
                                 type="time"
-                                name="breaks[{{ $attendance->breakTimes->count() }}][break_start]"
+                                name="breaks[{{ $newIndex }}][break_start]"
+                                value="{{ old("breaks.$newIndex.break_start") }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
 
                             <span class="detail__separator">
                                 ～
                             </span>
 
-                            <input class="detail__box time"
+                            <input
+                                class="detail__box time"
                                 type="time"
-                                name="breaks[{{ $attendance->breakTimes->count() }}][break_end]"
+                                name="breaks[{{ $newIndex }}][break_end]"
+                                value="{{ old("breaks.$newIndex.break_end") }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
 
                         </div>
+
+                        @if (
+                        $errors->has("breaks.$newIndex.break_start") ||
+                        $errors->has("breaks.$newIndex.break_end")
+                        )
+                        <p class="error">
+                            {{ $errors->first("breaks.$newIndex.break_start") ?: $errors->first("breaks.$newIndex.break_end") }}
+                        </p>
+                        @endif
                     </td>
                 </tr>
 
@@ -129,7 +154,7 @@
                     <th>備考</th>
                     <td>
                         <textarea
-                            class="detail__content note"
+                            class="note"
                             name="reason"
                             {{ $pendingRequest ? 'disabled' : '' }}>{{ $attendance->note }}</textarea>
                         @error('reason')

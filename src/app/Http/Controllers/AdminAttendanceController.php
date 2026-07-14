@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRecord;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\BreakTime;
+use App\Http\Requests\AdminAttendanceRequest;
 
 
 class AdminAttendanceController extends Controller
@@ -42,7 +44,9 @@ class AdminAttendanceController extends Controller
         ));
     }
 
-    public function update(Request $request, AttendanceRecord $attendance)
+    public function update(
+        AdminAttendanceRequest $request,
+        AttendanceRecord $attendance)
     {
         $clockIn = Carbon::parse(
             $attendance->work_date . ' ' . $request->clock_in
@@ -57,6 +61,30 @@ class AdminAttendanceController extends Controller
             'clock_out' => $clockOut,
             'note' => $request->note,
         ]);
+
+        // 既存の休憩を削除
+        $attendance->breakTimes()->delete();
+
+        // 入力された休憩を登録
+        foreach ($request->breaks ?? [] as $break) {
+
+            if (
+                empty($break['break_start']) &&
+                empty($break['break_end'])
+            ) {
+                continue;
+            }
+
+            BreakTime::create([
+                'attendance_record_id' => $attendance->id,
+
+                'break_start' => $attendance->work_date->format('Y-m-d')
+                    . ' ' . $break['break_start'],
+
+                'break_end' => $attendance->work_date->format('Y-m-d')
+                    . ' ' . $break['break_end'],
+            ]);
+        }
 
         return redirect()->route('admin.attendance.list')
         ->with('success', '勤怠情報を更新しました');

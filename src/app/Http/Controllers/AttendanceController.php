@@ -116,11 +116,30 @@ class AttendanceController extends Controller
             ?Carbon::parse($request->month)
             :now();
 
-        $attendances = AttendanceRecord::with('breakTimes')->where('user_id', auth()->id())
+        $attendanceRecords = AttendanceRecord::with('breakTimes')->where('user_id', auth()->id())
         ->whereYear('work_date', $currentMonth->year)
         ->whereMonth('work_date', $currentMonth->month)
         ->orderBy('work_date')
-        ->get();
+        ->get()
+        ->keyBy(function ($attendance) {
+            return Carbon::parse($attendance->work_date)->format('Y-m-d');
+        });
+
+        $attendances = collect();
+
+        $date =$currentMonth->copy()->startOfMonth();
+
+        while ($date->month == $currentMonth->month) {
+
+        $attendance = $attendanceRecords->get($date->format('Y-m-d'));
+
+            $attendances->push([
+                'date' => $date->copy(),
+                'attendance' => $attendance,
+            ]);
+
+            $date->addDay();
+        }
 
         return view('attendance.index', compact(
                 'attendances',
@@ -148,16 +167,18 @@ class AttendanceController extends Controller
         AttendanceRequest $request
     )
     {
+        $date = $attendance->work_date->format('Y-m-d');
+
         $attendanceCorrectionRequest = AttendanceCorrectionRequest::create([
             'attendance_record_id' => $attendance->id,
-            'requested_clock_in' => $attendance->work_date . ' ' . $request->requested_clock_in,
-            'requested_clock_out' => $attendance->work_date . ' ' . $request->requested_clock_out,
+            'requested_clock_in' => $date . ' ' . $request->requested_clock_in,
+            'requested_clock_out' => $date . ' ' . $request->requested_clock_out,
             'reason' => $request->reason,
         ]);
 
         foreach ($request->breaks as $break)
             {
-                if ( 
+                if (
                     empty($break['break_start'])
                     && empty($break['break_end'])
                 ){
@@ -168,11 +189,11 @@ class AttendanceController extends Controller
                     'attendance_correction_request_id'
                         => $attendanceCorrectionRequest->id,
 
-                    'requested_break_start'
-                        => $attendance->work_date . ' ' . $break['break_start'],
+                    'break_start'
+                        => $date . ' ' . $break['break_start'],
 
-                    'requested_break_end'
-                        =>$attendance->work_date . ' ' . $break['break_end'],
+                    'break_end'
+                        =>$date . ' ' . $break['break_end'],
 
                 ]);
             }

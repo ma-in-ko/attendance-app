@@ -71,6 +71,12 @@ td {
     border-radius: 3px;
 }
 
+.correction-detail__button .approved-button {
+    background: #808080;
+    color: #fff;
+    cursor: not-allowed;
+    border: none;
+}
 .error {
     color: red;
 }

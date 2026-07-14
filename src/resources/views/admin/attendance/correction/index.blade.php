@@ -34,7 +34,7 @@
             <tr>
                 <td>{{ $correctionRequest->is_approved ? '承認済' : '承認待ち' }} </td>
                 <td>{{ $correctionRequest->attendanceRecord->user->name }}</td>
-                <td>{{ $correctionRequest->attendanceRecord->work_date }}</td>
+                <td>{{ $correctionRequest->attendanceRecord->work_date->format('Y/m/d') }}</td>
                 <td>{{ $correctionRequest->reason }}</td>
                 <td>{{ $correctionRequest->created_at->format('Y/m/d H:i') }}</td>
                 <td>

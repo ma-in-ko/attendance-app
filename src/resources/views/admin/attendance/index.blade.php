@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="attendance">
-    <h1>{{ $currentDay -> format('Y年m月d日') }}</h1>
+    <h1>{{ $currentDay -> format('Y年m月d日') }}の勤怠</h1>
 
     <div class="date-nav">
         <a href="{{ route('admin.attendance.list', ['day' => $currentDay->copy()->subDay()->format('Y-m-d')]) }}">

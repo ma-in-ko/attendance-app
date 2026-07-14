@@ -56,13 +56,17 @@ td {
     padding-left: 80px;
 }
 
-.time {
+.time__content {
     display: flex;
-    justify-content: center;
     align-items: center;
+}
+
+.time {
     border: 1px solid #c7c7c7;
     height: 20px;
     width: 80px;
+    text-align: center;
+    box-sizing: border-box;
 
 }
 
