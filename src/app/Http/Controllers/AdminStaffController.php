@@ -23,11 +23,30 @@ class AdminStaffController extends Controller
             ?Carbon::parse($request->month)
             :now();
 
-        $attendances = AttendanceRecord::with('breakTimes')->where('user_id', $user->id)
+        $attendanceRecords = AttendanceRecord::with('breakTimes')
+        ->where('user_id', $user->id)
         ->whereYear('work_date', $currentMonth->year)
         ->whereMonth('work_date', $currentMonth->month)
         ->orderBy('work_date')
-        ->get();
+        ->get()
+        ->keyBy(function ($attendance) {
+            return Carbon::parse($attendance->work_date)->format('Y-m-d');
+        });
+
+        $attendances = collect();
+
+        $date = $currentMonth->copy()->startOfMonth();
+
+        while ($date->month == $currentMonth->month) {
+            $attendance = $attendanceRecords->get($date->format('Y-m-d'));
+
+            $attendances->push([
+                'date' => $date->copy(),
+                'attendance' => $attendance,
+            ]);
+
+            $date->addDay();
+        }
 
         return view('admin.staff.attendance', compact(
                 'user',

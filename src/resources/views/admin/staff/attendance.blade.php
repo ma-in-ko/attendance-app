@@ -40,14 +40,21 @@
         </thead>
 
         <tbody>
-            @foreach($attendances as $attendance)
+            @foreach($attendances as $item)
+
+            @php
+            $attendance = $item['attendance'];
+            $date = $item['date'];
+            @endphp
 
             @php
             $breakMinutes = 0;
 
-            foreach ($attendance->breakTimes as $breakTime) {
+            $breakTimes = $attendance ? $attendance->breakTimes : collect();
+
+            foreach ($breakTimes as $breakTime) {
             if ($breakTime->break_start && $breakTime->break_end) {
-            $breakMinutes += \Carbon\Carbon::parse($breakTime->break_start)
+            $breakMinutes += \Carbon\Carbon::parse ($breakTime->break_start)
             ->diffInMinutes(
             \Carbon\Carbon::parse($breakTime->break_end)
             );
@@ -59,17 +66,18 @@
             $breakHours = floor($breakMinutes / 60);
             $breakRemainMinutes = $breakMinutes % 60;
 
-            $breakTimeFormatted = sprintf(
+            $breakTimeFormatted = $attendance
+            ? sprintf(
             '%02d:%02d',
             $breakHours,
             $breakRemainMinutes
-            );
+            ) : '';
             @endphp
 
             @php
             $workMinutes = 0;
 
-            if ($attendance->clock_in && $attendance->clock_out) {
+            if ($attendance && $attendance->clock_in && $attendance->clock_out) {
             $workMinutes =
             \Carbon\Carbon::parse($attendance->clock_in)
             ->diffInMinutes(
@@ -82,31 +90,34 @@
             $workHours = floor($workMinutes / 60);
             $workRemainMinutes = $workMinutes % 60;
 
-            $workTimeFormatted = sprintf(
+            $workTimeFormatted = $attendance
+            ? sprintf(
             '%02d:%02d',
             $workHours,
             $workRemainMinutes
-            );
+            ) : '';
             @endphp
 
             <tr>
-                <td>{{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}
-                    ({{ ['日','月','火','水','木','金','土'][\Carbon\Carbon::parse($attendance->work_date)->dayOfWeek] }})
+                <td>{{ $date->format('m/d') }}
+                    ({{ ['日','月','火','水','木','金','土'][$date->dayOfWeek] }})
                 </td>
-                <td>{{ $attendance->clock_in
+                <td>{{ $attendance && $attendance->clock_in
                         ?\Carbon\Carbon::parse($attendance->clock_in)->format('H:i')
-                        : ''
-                    }}</td>
-                <td>{{ $attendance->clock_out
+                        : ''}}
+                </td>
+                <td>{{ $attendance && $attendance->clock_out
                         ?\Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
-                        : ''
-                    }}</td>
+                        : ''}}
+                </td>
                 <td>{{ $breakTimeFormatted }}</td>
                 <td>{{ $workTimeFormatted }}</td>
                 <td>
+                    @if($attendance)
                     <a href="{{ route('admin.attendance.detail', $attendance) }}">
                         詳細
                     </a>
+                    @endif
                 </td>
             </tr>
             @endforeach

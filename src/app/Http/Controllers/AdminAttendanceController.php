@@ -48,12 +48,14 @@ class AdminAttendanceController extends Controller
         AdminAttendanceRequest $request,
         AttendanceRecord $attendance)
     {
+        $date = $attendance->work_date->format('Y-m-d');
+
         $clockIn = Carbon::parse(
-            $attendance->work_date . ' ' . $request->clock_in
+            $date . ' ' . $request->clock_in
         );
 
         $clockOut = Carbon::parse(
-            $attendance->work_date . ' ' . $request->clock_out
+            $date . ' ' . $request->clock_out
         );
 
         $attendance->update([

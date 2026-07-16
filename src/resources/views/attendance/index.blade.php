@@ -64,11 +64,12 @@
             $breakHours = floor($breakMinutes / 60);
             $breakRemainMinutes = $breakMinutes % 60;
 
-            $breakTimeFormatted = sprintf(
+            $breakTimeFormatted = $attendance
+            ? sprintf(
             '%02d:%02d',
             $breakHours,
             $breakRemainMinutes
-            );
+            ) : '';
             @endphp
 
             @php
@@ -87,11 +88,12 @@
             $workHours = floor($workMinutes / 60);
             $workRemainMinutes = $workMinutes % 60;
 
-            $workTimeFormatted = sprintf(
+            $workTimeFormatted = $attendance
+            ? sprintf(
             '%02d:%02d',
             $workHours,
             $workRemainMinutes
-            );
+            ) : '';
             @endphp
 
             <tr>

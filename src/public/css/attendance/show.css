@@ -61,6 +61,18 @@ td {
     align-items: center;
 }
 
+.time::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.time::-webkit-clear-button {
+    display: none;
+}
+
+.time::-webkit-inner-spin-button {
+    display: none;
+}
+
 .time {
     border: 1px solid #c7c7c7;
     height: 20px;
