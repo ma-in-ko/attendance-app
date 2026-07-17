@@ -38,27 +38,17 @@ td {
     font-weight: bold;
 }
 
-.detail__content {
-    display: flex;
-    align-items: center;
-}
-
-.detail__box,
-.detail__separator {
-    width: 80px;
-}
-
-.detail__separator {
-    text-align: center;
-}
-
-.date {
-    padding-left: 80px;
-}
-
+.detail__content,
 .time__content {
-    display: flex;
+    display: grid;
+    grid-template-columns: 120px 60px 120px;
     align-items: center;
+}
+
+.name,
+.year,
+.date {
+    padding-left: 20px;
 }
 
 .time::-webkit-calendar-picker-indicator {
@@ -74,16 +64,21 @@ td {
 }
 
 .time {
-    border: none;
-    height: 20px;
+    border: 1px solid #c7c7c7;
+    height: 30px;
     width: 80px;
     text-align: center;
+    box-sizing: border-box;
+    font-weight: bold;
 }
 
 .note {
-    border: none;
+    border: 1px solid #c7c7c7;
+    height: 40px;
     width: 250px;
     resize: none;
+    padding-left: 20px;
+    font-weight: bold;
 }
 
 .pending {

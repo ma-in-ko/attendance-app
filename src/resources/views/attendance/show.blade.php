@@ -17,7 +17,7 @@
                 <tr>
                     <th>名前</th>
                     <td>
-                        <div class="detail__content">
+                        <div class="detail__content name">
                             <span>
                                 {{ $attendance->user->name }}
                             </span>
@@ -28,9 +28,10 @@
                     <th>日付</th>
                     <td>
                         <div class="detail__content">
-                            <span class="detail__box">
+                            <span class="detail__box year">
                                 {{ Carbon\Carbon::parse($attendance->work_date)->format('Y年') }}
                             </span>
+                            <span></span>
                             <span class="detail__box date">
                                 {{ Carbon\Carbon::parse($attendance->work_date)->format('n月j日')}}
                             </span>
@@ -42,11 +43,22 @@
                     <th>出勤・退勤</th>
                     <td>
                         <div class="time__content">
+
+                            @if($pendingRequest)
+                            <span class="detail__box time">
+                                {{ Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}
+                            </span>
+
+                            <span class="detail__separator">～</span>
+
+                            <span class="detail__box time">
+                                {{ $attendance->clock_out ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+                            </span>
+                            @else
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_in"
-                                value="{{ Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+                                value="{{ Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}">
                             <span class="detail__separator">
                                 ～
                             </span>
@@ -54,10 +66,11 @@
                                 type="time"
                                 name="requested_clock_out"
                                 value="{{$attendance->clock_out
-                                ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
-                                : '' }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+                                    ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
+                                : '' }}">
+                            @endif
                         </div>
+
                         @if ($errors->has('requested_clock_in') || $errors->has('requested_clock_out'))
                         <p class="error">出勤時間もしくは退勤時間が不適切な値です</p>
                         @endif
@@ -74,11 +87,24 @@
                     <td>
                         <div class="time__content">
 
+                            @if($pendingRequest)
+
+                            <span class="detail__box time">
+                                {{ $breakTime->break_start ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i') : '' }}
+                            </span>
+
+                            <span class="detail__separator">～</span>
+
+                            <span class="detail__box time">
+                                {{ $breakTime->break_end ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i') : '' }}
+                            </span>
+
+                            @else
+
                             <input class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $index }}][break_start]"
-                                value="{{ $breakTime->break_start ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i') : '' }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+                                value="{{ $breakTime->break_start ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i') : '' }}">
 
                             <span class="detail__separator">
                                 ～
@@ -88,11 +114,13 @@
                                 type="time"
                                 name="breaks[{{ $index }}][break_end]"
                                 value="{{ $breakTime->break_end
-                                ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
-                                : '' }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+                                    ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
+                                    : '' }}">
 
+                            @endif
                         </div>
+
+
                         @if (
                         $errors->has("breaks.$index.break_start") ||
                         $errors->has("breaks.$index.break_end")
@@ -110,6 +138,7 @@
                 $newIndex = $attendance->breakTimes->count();
                 @endphp
 
+                @if(!$pendingRequest)
                 <tr>
                     <th>
                         休憩{{ $newIndex + 1 }}
@@ -122,8 +151,7 @@
                                 class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $newIndex }}][break_start]"
-                                value="{{ old("breaks.$newIndex.break_start") }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+                                value="{{ old("breaks.$newIndex.break_start") }}">
 
                             <span class="detail__separator">
                                 ～
@@ -133,8 +161,7 @@
                                 class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $newIndex }}][break_end]"
-                                value="{{ old("breaks.$newIndex.break_end") }}"
-                                {{ $pendingRequest ? 'disabled' : '' }}>
+                                value="{{ old("breaks.$newIndex.break_end") }}">
 
                         </div>
 
@@ -148,15 +175,26 @@
                         @endif
                     </td>
                 </tr>
+                @endif
 
 
                 <tr>
                     <th>備考</th>
                     <td>
+
+                        @if($pendingRequest)
+
+                        <span class="note-text">
+                            {{ $attendance->note }}
+                        </span>
+
+                        @else
+
                         <textarea
                             class="note"
-                            name="reason"
-                            {{ $pendingRequest ? 'disabled' : '' }}>{{ $attendance->note }}</textarea>
+                            name="reason">{{ $attendance->note }}</textarea>
+                        @endif
+
                         @error('reason')
                         <p class="error">{{$message }}</p>
                         @enderror

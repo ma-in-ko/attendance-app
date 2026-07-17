@@ -38,27 +38,22 @@ td {
     font-weight: bold;
 }
 
-.detail__content {
-    display: flex;
+.detail__content,
+.time__content {
+    display: grid;
+    grid-template-columns: 120px 60px 120px;
     align-items: center;
 }
 
-.detail__box,
-.detail__separator {
-    width: 80px;
-}
-
-.detail__separator {
+.time__content span.detail__box {
+    display: inline-block;
     text-align: center;
 }
 
+.name,
+.year,
 .date {
-    padding-left: 80px;
-}
-
-.time__content {
-    display: flex;
-    align-items: center;
+    padding-left: 20px;
 }
 
 .time::-webkit-calendar-picker-indicator {
@@ -75,11 +70,21 @@ td {
 
 .time {
     border: 1px solid #c7c7c7;
-    height: 20px;
+    height: 30px;
     width: 80px;
     text-align: center;
     box-sizing: border-box;
+    font-weight: bold;
+}
 
+span.time {
+    border: none;
+}
+
+.note-text {
+    display: inline-block;
+    width: auto;
+    padding-left: 20px;
 }
 
 .note {
@@ -87,6 +92,8 @@ td {
     height: 40px;
     width: 250px;
     resize: none;
+    padding-left: 20px;
+    font-weight: bold;
 }
 
 .pending {
@@ -101,10 +108,12 @@ td {
 
 .attendance__button button {
     margin-top: 20px;
-    padding: 10px 30px;
+    padding: 8px 35px;
     background: #000;
     color: #fff;
     border-radius: 3px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .error {
