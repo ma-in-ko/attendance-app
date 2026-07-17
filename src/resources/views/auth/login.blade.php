@@ -41,7 +41,7 @@
         <button
             class="auth__button"
             type="submit">
-            ログイン
+            ログインする
         </button>
 
     </form>
