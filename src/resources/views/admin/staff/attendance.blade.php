@@ -123,6 +123,16 @@
             @endforeach
         </tbody>
     </table>
+
+
+    <div class="export-area">
+        <a class="export" href="{{ route('admin.staff.export', [
+        'user' => $user->id,
+        'month' => $currentMonth->format('Y-m')
+        ]) }}">
+            CSV出力
+        </a>
+    </div>
 </div>
 
 
