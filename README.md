@@ -12,6 +12,7 @@
 
 ### 一般ユーザー
 * 会員登録
+* メール認証
 * ログイン / ログアウト
 * 出勤打刻
 * 退勤打刻
@@ -28,6 +29,7 @@
 * 勤怠詳細表示
 * 修正申請一覧表示
 * 修正申請承認
+* CSV出力
 
 ## 画面一覧
  
@@ -52,7 +54,7 @@
 * MySQL 8.0
 * Docker
 * Blade
-* Laravel Fortify(認証)
+* Laravel Fortify (認証・メール認証)
 
 ## 環境構築
 
@@ -73,12 +75,22 @@ php artisan key:generate
 
 .envファイルに以下を設定してください
 ```
-DB_CONNECTIONmy=sql
+DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
+```
+```
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=test@example.com
+MAIL_FROM_NAME="${APP_NAME}"
 ```
 
 ### マイグレーション
@@ -91,28 +103,34 @@ php artisan migrate --seed
 
 ### 実装内容
 * 会員登録
+* メール認証
 * ログイン
 * ログアウト
 * 管理者ログイン
+
+### メール認証（開発環境)
+
+開発環境ではMailHog を利用しています。
+
+メール認証を行う場合は以下へアクセスしてください。
+
+`http://localhost:8025
 
 ### バリデーション
 FormRequestを使用してバリデーションを実装しています。
 
 ## 開発環境URL
 * アプリ： http://localhost
+* MailHog : http://localhost:8025
 * phpMyAdmin： http://localhost:8080
 
 ## ER図
-![ER図](docs/er.png)
+![ER図](docs/ER-drawio.png)
 
 ## 工夫した点
-* Laravel Fortifyを利用して認証機能を実装
+* Laravel Fortifyを利用して認証・メール認証機能を実装
 * 出勤・退勤・休憩状態を画面上でわかりやすく表示
 * 勤怠修正申請と承認機能を実装し、実際の業務を意識した設計
 * リレーションを活用し、勤怠・休憩・修正申請を適切に管理
 * Bladeテンプレートを利用し、画面ごとにレイアウトを共通化
-
-
-
-
- 
+* スタッフごとの勤怠情報をCSV形式で出力できるように実装
