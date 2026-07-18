@@ -31,7 +31,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::middleware('auth')->group(function (){
+Route::middleware('auth', 'verified')->group(function (){
 
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
 
