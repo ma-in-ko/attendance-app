@@ -114,7 +114,7 @@ php artisan migrate --seed
 
 メール認証を行う場合は以下へアクセスしてください。
 
-`http://localhost:8025
+- MailHog : `http://localhost:8025`
 
 ### バリデーション
 FormRequestを使用してバリデーションを実装しています。
