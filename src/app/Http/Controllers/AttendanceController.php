@@ -24,7 +24,7 @@ class AttendanceController extends Controller
                 $status = '退勤済';
             } else {
                 $latestBreak = $attendance->breakTimes()
-                    ->latest()
+                    ->latest('id')
                     ->first();
 
                 if ($latestBreak && !$latestBreak->break_end) {
@@ -100,7 +100,7 @@ class AttendanceController extends Controller
 
         $break = BreakTime::where('attendance_record_id', $attendance->id)
         ->whereNull('break_end')
-        ->latest()
+        ->latest('id')
         ->first();
 
         $break->update([
