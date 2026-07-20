@@ -52,6 +52,7 @@ class ClockInTest extends TestCase
         $response->assertDontSee('出勤');
     }
 
+    /** @test */
     public function 出勤時刻が勤怠一覧画面で確認できる()
     {
         $user = User::factory()->create();

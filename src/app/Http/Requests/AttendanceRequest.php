@@ -82,7 +82,7 @@ class AttendanceRequest extends FormRequest
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_start",
-                        '休憩時間が不適切な値です。'
+                        '休憩時間が不適切な値です'
                     );
                 }
 
@@ -94,7 +94,7 @@ class AttendanceRequest extends FormRequest
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
-                        '休憩時間が不適切な値です'
+                        '休憩時間もしくは退勤時間が不適切な値です'
                     );
                 }
 
@@ -120,7 +120,6 @@ class AttendanceRequest extends FormRequest
             'requested_clock_in.required' => '出勤時間を入力してください',
             'requested_clock_out.required' => '退勤時間を入力してください',
             'requested_clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
-            'breaks.*.break_end.after' => '休憩時間もしくは退勤時間が不適切な値です',
             'reason.required' => '備考を記入してください',
         ];
     }
