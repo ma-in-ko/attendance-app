@@ -11,7 +11,7 @@ class AdminAttendanceCorrectionRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $status = $request->tab ?? 'pendeng';
+        $status = $request->tab ?? 'pending';
 
         $requests = AttendanceCorrectionRequest::with('attendanceRecord.user')
         ->when($status === 'pending', function ($query) {
