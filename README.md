@@ -55,6 +55,7 @@
 * Docker
 * Blade
 * Laravel Fortify (認証・メール認証)
+* PHPUnit
 
 ## 環境構築
 
@@ -71,6 +72,7 @@ docker compose exec php bash
 composer install
 cp .env.example .env
 php artisan key:generate
+
 ```
 
 .envファイルに以下を設定してください
@@ -95,7 +97,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 
 ### マイグレーション
 ```
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 ## 認証機能
@@ -119,6 +121,36 @@ php artisan migrate --seed
 ### バリデーション
 FormRequestを使用してバリデーションを実装しています。
 
+## テスト用アカウント
+
+### 一般ユーザー
+
+|メールアドレス|パスワード|
+|---|---|
+|user1@example.com|password|
+|user2@example.com|password|
+
+### 管理者
+
+|メールアドレス|パスワード|
+|---|---|
+|user@example.com|password|
+
+## テスト
+PHPUnitを用いて単体テストを実施しています。
+
+```
+php artisan test
+```
+
+または
+
+```
+php artisan test --filter=○○
+```
+
+で実行できます。
+
 ## 開発環境URL
 * アプリ： http://localhost
 * MailHog : http://localhost:8025
@@ -134,3 +166,7 @@ FormRequestを使用してバリデーションを実装しています。
 * リレーションを活用し、勤怠・休憩・修正申請を適切に管理
 * Bladeテンプレートを利用し、画面ごとにレイアウトを共通化
 * スタッフごとの勤怠情報をCSV形式で出力できるように実装
+
+## 作者
+
+作成者：中尾麻衣子
