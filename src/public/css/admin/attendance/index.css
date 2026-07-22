@@ -24,7 +24,8 @@
 
 .date-nav a {
     text-decoration: none;
-    color: #2e2d2d;
+    color: #737171;
+    font-weight: bold;
 }
 
 .date-nav span {
@@ -46,7 +47,8 @@ td {
     border-bottom: 1px solid #c7c7c7;
     padding: 16px;
     text-align: center;
-    color: #2e2d2d
+    color: #737171;
+    font-weight: bold;
 }
 
 td a {

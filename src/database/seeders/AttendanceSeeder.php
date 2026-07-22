@@ -39,7 +39,7 @@ class AttendanceSeeder extends Seeder
             'work_date' => $date->toDateString(),
             'clock_in' => Carbon::parse($date->format('Y-m-d') . ' ' . $clockIn),
             'clock_out' => Carbon::parse($date->format('Y-m-d') . ' ' . $clockOut),
-            'note' => 'Seederデータ',
+            'note' => null,
         ]);
 
         BreakTime::create([

@@ -33,7 +33,7 @@
                             </span>
                             <span></span>
                             <span class="detail__box date">
-                                {{ Carbon\Carbon::parse($attendance->work_date)->format('n月j日')}}
+                                {{ Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}
                             </span>
                         </div>
                     </td>
@@ -58,16 +58,16 @@
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_in"
-                                value="{{ Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}">
+                                value="{{ old('requested_clock_in', Carbon\Carbon::parse($attendance->clock_in)->format('H:i')) }}">
                             <span class="detail__separator">
                                 ～
                             </span>
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_out"
-                                value="{{$attendance->clock_out
+                                value="{{old('requested_clock_out', $attendance->clock_out
                                     ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
-                                : '' }}">
+                                : '') }}">
                             @endif
                         </div>
 
@@ -104,7 +104,7 @@
                             <input class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $index }}][break_start]"
-                                value="{{ $breakTime->break_start ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i') : '' }}">
+                                value="{{ old("breaks.$index.break_start", $breakTime->break_start ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i') : '') }}">
 
                             <span class="detail__separator">
                                 ～
@@ -113,9 +113,9 @@
                             <input class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $index }}][break_end]"
-                                value="{{ $breakTime->break_end
+                                value="{{ old("breaks.$index.break_end", $breakTime->break_end
                                     ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
-                                    : '' }}">
+                                    : '') }}">
 
                             @endif
                         </div>
@@ -192,7 +192,7 @@
 
                         <textarea
                             class="note"
-                            name="reason">{{ $attendance->note }}</textarea>
+                            name="reason">{{ old('reason', $attendance->note) }}</textarea>
                         @endif
 
                         @error('reason')

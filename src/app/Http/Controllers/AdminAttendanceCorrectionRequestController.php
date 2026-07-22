@@ -11,7 +11,7 @@ class AdminAttendanceCorrectionRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $status = $request->tab ?? 'pending';
+        $status = $request->status ?? 'pending';
 
         $requests = AttendanceCorrectionRequest::with('attendanceRecord.user')
         ->when($status === 'pending', function ($query) {
@@ -23,7 +23,7 @@ class AdminAttendanceCorrectionRequestController extends Controller
         ->get();
 
         return view(
-            'admin.attendance.correction.index', compact('requests'));
+            'admin.attendance.correction.index', compact('requests', 'status'));
     }
 
     public function show($id)
@@ -59,7 +59,7 @@ class AdminAttendanceCorrectionRequestController extends Controller
 
         //修正申請された休憩を登録
         foreach (
-            $attendanceCorrectionRequest->attendanceCorrectionBreaks 
+            $attendanceCorrectionRequest->attendanceCorrectionBreaks
             as $break
         ) {
             BreakTime::create([

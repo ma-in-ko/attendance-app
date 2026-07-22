@@ -112,9 +112,11 @@
                 <td>{{ $workTimeFormatted }}</td>
                 <td>
                     @if($attendance)
-                    <a href="{{ route('attendance.show', $attendance) }}">
-                        詳細
-                    </a>
+                        <a href="{{ route('attendance.show', $attendance) }}">
+                            詳細
+                        </a>
+                    @else
+                        <span class="detail-text"> 詳細</span>
                     @endif
                 </td>
             </tr>

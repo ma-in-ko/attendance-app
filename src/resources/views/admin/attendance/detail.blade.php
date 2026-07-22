@@ -156,7 +156,7 @@
                         <textarea
                             class="note"
                             name="note"
-                            {{ $pendingRequest ? 'disabled' : '' }}>{{ $attendance->note }}</textarea>
+                            {{ $pendingRequest ? 'disabled' : '' }}>{{ old('note', $attendance->note) }}</textarea>
                         @error('note')
                         <p class="error">{{$message }}</p>
                         @enderror

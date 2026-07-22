@@ -8,13 +8,18 @@
 <div class="correction-list">
     <h1>申請一覧</h1>
 
-    <div class="tab">
-        <a href="{{ route('request.index', ['tab' => 'pending']) }}">
+    <div class="correction__tabs">
+
+        <a class="correction__tab {{ $status === 'pending' ? 'active' : '' }}"
+            href="{{ route('request.index', ['status' => 'pending']) }}">
             承認待ち
         </a>
-        <a href="{{ route('request.index', ['tab' => 'approved']) }}">
+
+        <a class="correction__tab {{$status === 'approved' ? 'active' : '' }}"
+            href="{{ route('request.index', ['status' => 'approved']) }}">
             承認済み
         </a>
+
     </div>
 
     <table>

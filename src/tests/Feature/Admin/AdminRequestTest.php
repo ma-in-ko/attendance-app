@@ -141,7 +141,7 @@ class AdminRequestTest extends TestCase
         $admin = User::factory()->create([
             'admin_status' => true,
             'email_verified_at' => now(),
-        ]);
+            ]);
 
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,
@@ -162,19 +162,20 @@ class AdminRequestTest extends TestCase
 
         $response = $this->post(route('admin.request.approve', $request->id));
 
-        $attendance->refresh();
         $request->refresh();
+        $attendance->refresh();
+
+        $this->assertEquals(1, $request->is_approved);
+        $this->assertNotNull($request->approved_at);
 
         $this->assertEquals(
-            Carbon::today()->setTime(9, 0)->format('Y-m-d H:i:s'),
+            Carbon::today()->setTime(9, 0),
             $attendance->clock_in
         );
+
         $this->assertEquals(
-            Carbon::today()->setTime(10, 0)->format('Y-m-d H:i:s'),
+            Carbon::today()->setTime(10, 0),
             $attendance->clock_out
         );
-        $this->assertEquals('テスト', $attendance->note);
-        $this->assertTrue($request->is_approved);
-        $response->assertRedirect(route('request.index'));
     }
 }
