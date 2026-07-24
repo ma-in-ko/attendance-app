@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakTime;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +13,7 @@ class BreakTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function 休憩ボタンが正しく機能する ()
+    public function 休憩ボタンが正しく機能する()
     {
         $user = User::factory()->create();
 
@@ -143,5 +143,4 @@ class BreakTest extends TestCase
             \Carbon\Carbon::parse($break->break_end)->format('H:i')
         );
     }
-
 }

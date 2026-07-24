@@ -6,29 +6,28 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class AdminLoginTest extends TestCase
 {
     use RefreshDatabase;
 
-   /** @test */
+    /** @test */
     public function メールアドレスが未入力の場合バリデーションメッセージが表示される()
     {
-    User::factory()->create([
-    'name' => '管理者',
-    'email' => 'admin@example.com',
-    'password' => bcrypt('password'),
-    'admin_status' => true,
-    ]);
+        User::factory()->create([
+            'name' => '管理者',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+            'admin_status' => true,
+        ]);
 
-    $response = $this->post('/admin/login',[
-        'email' => '',
-        'password' =>'password',
-    ]);
+        $response = $this->post('/admin/login', [
+            'email' => '',
+            'password' => 'password',
+        ]);
 
-    $response->assertSessionHasErrors([
-        'email' => 'メールアドレスを入力してください'
-    ]);
+        $response->assertSessionHasErrors([
+            'email' => 'メールアドレスを入力してください',
+        ]);
 
     }
 
@@ -47,7 +46,7 @@ class AdminLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'password' => 'パスワードを入力してください'
+            'password' => 'パスワードを入力してください',
         ]);
     }
 
@@ -66,7 +65,7 @@ class AdminLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'email' => 'ログイン情報が登録されていません'
+            'email' => 'ログイン情報が登録されていません',
         ]);
     }
 }

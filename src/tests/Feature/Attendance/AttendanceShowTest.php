@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakTime;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceShowTest extends TestCase
 {

@@ -17,10 +17,10 @@
         </a>
 
         <span class="month-nav__current">
-            📅{{ $currentMonth -> format('Y/m') }}
+            📅{{ $currentMonth->format('Y/m') }}
         </span>
 
-        <a href=" {{ route('admin.staff.attendance', [
+        <a href="{{ route('admin.staff.attendance', [
             'user' => $user->id,
             'month' => $currentMonth->copy()->addMonth()->format('Y-m') ]) }}">
             翌月 →
@@ -114,9 +114,11 @@
                 <td>{{ $workTimeFormatted }}</td>
                 <td>
                     @if($attendance)
-                    <a href="{{ route('admin.attendance.detail', $attendance) }}">
+                    <a href="{{ route('admin.attendance.detail', $attendance) }}" class="detaill-text">
                         詳細
                     </a>
+                    @else
+                    <span class="detail-text">詳細</span>
                     @endif
                 </td>
             </tr>

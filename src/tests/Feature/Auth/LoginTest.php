@@ -6,27 +6,26 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-   /** @test */
+    /** @test */
     public function メールアドレスが未入力の場合バリデーションメッセージが表示される()
     {
         User::factory()->create([
-        'name' => 'テスト太郎',
-        'email' => 'test@example.com',
-        'password' => bcrypt('password'),
+            'name' => 'テスト太郎',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password'),
         ]);
 
-        $response = $this->post('/login',[
+        $response = $this->post('/login', [
             'email' => '',
-            'password' =>'password',
+            'password' => 'password',
         ]);
 
         $response->assertSessionHasErrors([
-            'email' => 'メールアドレスを入力してください'
+            'email' => 'メールアドレスを入力してください',
         ]);
 
     }
@@ -46,7 +45,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'password' => 'パスワードを入力してください'
+            'password' => 'パスワードを入力してください',
         ]);
     }
 
@@ -65,7 +64,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'email' => 'ログイン情報が登録されていません'
+            'email' => 'ログイン情報が登録されていません',
         ]);
     }
 }

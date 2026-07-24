@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceIndexTest extends TestCase
 {
@@ -28,7 +28,7 @@ class AttendanceIndexTest extends TestCase
             'user_id' => $user->id,
             'work_date' => Carbon::today()->startOfMonth()->addDay(),
             'clock_in' => Carbon::today()->startOfMonth()->addDay()->setTime(8, 30),
-            'clock_out' => Carbon::today()->startOfMonth()->addDay()->setTime(17, 30 ),
+            'clock_out' => Carbon::today()->startOfMonth()->addDay()->setTime(17, 30),
         ]);
 
         AttendanceRecord::create([
@@ -63,7 +63,6 @@ class AttendanceIndexTest extends TestCase
         $response->assertDontSee('09:30');
         $response->assertDontSee('16:00');
     }
-
 
     /** @test */
     public function 勤怠一覧画面に遷移した際に現在の月が表示される()
@@ -121,7 +120,7 @@ class AttendanceIndexTest extends TestCase
         AttendanceRecord::create([
             'user_id' => $user->id,
             'work_date' => today(),
-            'clock_in' => Carbon::today()->setTime(9,15),
+            'clock_in' => Carbon::today()->setTime(9, 15),
             'clock_out' => Carbon::today()->setTime(18, 45),
         ]);
 
@@ -135,7 +134,7 @@ class AttendanceIndexTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->get(route('attendance.index', [
-        'month' => Carbon::now()->addMonth()->format('Y-m'),
+            'month' => Carbon::now()->addMonth()->format('Y-m'),
         ]));
 
         $response->assertSee(
@@ -171,5 +170,4 @@ class AttendanceIndexTest extends TestCase
         $response->assertSee('18:00');
 
     }
-
 }

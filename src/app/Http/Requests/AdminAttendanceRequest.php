@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AdminAttendanceRequest extends FormRequest
 {
@@ -52,7 +52,7 @@ class AdminAttendanceRequest extends FormRequest
             $clockIn = $this->clock_in;
             $clockOut = $this->clock_out;
 
-            if (!$clockIn || !$clockOut) {
+            if (! $clockIn || ! $clockOut) {
                 return;
             }
 
@@ -65,9 +65,9 @@ class AdminAttendanceRequest extends FormRequest
                     continue;
                 }
 
-                //休憩開始 < 出勤
+                // 休憩開始 < 出勤
                 if (
-                    !empty($break['break_start']) &&
+                    ! empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
                     ->lt(Carbon::parse($clockIn))
                 ) {
@@ -77,10 +77,9 @@ class AdminAttendanceRequest extends FormRequest
                     );
                 }
 
-
-                //休憩開始 > 退勤
+                // 休憩開始 > 退勤
                 if (
-                    !empty($break['break_start']) &&
+                    ! empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
                     ->gt(Carbon::parse($clockOut))
                 ) {
@@ -90,9 +89,9 @@ class AdminAttendanceRequest extends FormRequest
                     );
                 }
 
-                //休憩終了 > 退勤
+                // 休憩終了 > 退勤
                 if (
-                    !empty($break['break_end']) &&
+                    ! empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
                     ->gt(Carbon::parse($clockOut))
                 ) {
@@ -102,16 +101,16 @@ class AdminAttendanceRequest extends FormRequest
                     );
                 }
 
-                //休憩終了 < 休憩開始
+                // 休憩終了 < 休憩開始
                 if (
-                    !empty($break['break_start']) &&
-                    !empty($break['break_end']) &&
+                    ! empty($break['break_start']) &&
+                    ! empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
                     ->lt(Carbon::parse($break['break_start']))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
-                        '休憩時間もしくは退勤時間が不適切な値です'
+                        '休憩時間が不適切な値です'
                     );
                 }
             }
@@ -122,17 +121,13 @@ class AdminAttendanceRequest extends FormRequest
     {
         return [
 
-            'clock_in.required'
-            => '出勤時間を入力してください',
+            'clock_in.required' => '出勤時間を入力してください',
 
-            'clock_out.required'
-            => '退勤時間を入力してください',
+            'clock_out.required' => '退勤時間を入力してください',
 
-            'clock_out.after'
-            => '出勤時間もしくは退勤時間が不適切な値です',
+            'clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
 
-            'note.required'
-            => '備考を記入してください',
+            'note.required' => '備考を記入してください',
         ];
     }
 }

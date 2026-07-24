@@ -16,10 +16,10 @@
         </a>
 
         <span class="month-nav__current">
-            📅{{ $currentMonth -> format('Y/m') }}
+            📅{{ $currentMonth->format('Y/m') }}
         </span>
 
-        <a href=" {{ route('attendance.index', [
+        <a href="{{ route('attendance.index', [
             'month' => $currentMonth->copy()->addMonth()->format('Y-m') ]) }}">
             翌月 →
         </a>

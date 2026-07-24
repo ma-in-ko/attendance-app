@@ -30,11 +30,11 @@
                     <td>
                         <div class="detail__content">
                             <span class="detail__box year">
-                                {{ Carbon\Carbon::parse($attendance->work_date)->format('Y年') }}
+                                {{ $attendance->work_date->format('Y年') }}
                             </span>
                             <span></span>
                             <span class="detail__box date">
-                                {{ Carbon\Carbon::parse($attendance->work_date)->format('n月j日')}}
+                                {{ $attendance->work_date->format('n月j日')}}
                             </span>
                         </div>
                     </td>
@@ -79,7 +79,12 @@
                             <input class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $index }}][break_start]"
-                                value="{{ old("breaks.$index.break_start", Carbon\Carbon::parse($breakTime->break_start)->format('H:i')) }}"
+                                value="{{ old(
+                                    "breaks.$index.break_start",
+                                    $breakTime->break_start
+                                        ? Carbon\Carbon::parse($breakTime->break_start)->format('H:i')
+                                        : ''
+                                    ) }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
 
                             <span class="detail__separator">
@@ -89,9 +94,12 @@
                             <input class="detail__box time"
                                 type="time"
                                 name="breaks[{{ $index }}][break_end]"
-                                value="{{ old("breaks.$index.break_end", $breakTime->break_end
-                                ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
-                                : '') }}"
+                                value="{{ old(
+                                    "breaks.$index.break_end",
+                                    $breakTime->break_end
+                                        ? Carbon\Carbon::parse($breakTime->break_end)->format('H:i')
+                                    : ''
+                                ) }}"
                                 {{ $pendingRequest ? 'disabled' : '' }}>
 
                         </div>
@@ -100,7 +108,7 @@
                         $errors->has("breaks.$index.break_end")
                         )
                         <p class="error">
-                            {{ $errors->first("breaks.$index.break_start")?: $errors->first("breaks.$index.break_end") }}
+                            {{ $errors->first("breaks.$index.break_start") ?: $errors->first("breaks.$index.break_end") }}
                         </p>
                         @endif
                     </td>

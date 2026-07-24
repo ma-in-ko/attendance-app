@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AdminLoginRequest;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
@@ -11,13 +11,13 @@ class AdminAuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if(!Auth::attempt($credentials)) {
+        if (! Auth::attempt($credentials)) {
             return back()->withErrors([
                 'email' => 'ログイン情報が登録されていません',
             ]);
         }
 
-        if(!Auth::user()->admin_status) {
+        if (! Auth::user()->admin_status) {
             Auth::logout();
 
             return back()->withErrors([
@@ -26,6 +26,6 @@ class AdminAuthController extends Controller
         }
         $request->session()->regenerate();
 
-        return redirect('/admin/attendance/list');
+        return redirect()->route('admin.attendance.list');
     }
 }

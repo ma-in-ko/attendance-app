@@ -4,9 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\BreakTime;
-use App\Models\AttendanceCorrectionRequest;
 
 class AttendanceRecord extends Model
 {
@@ -28,7 +25,7 @@ class AttendanceRecord extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function breakTimes()
     {
         return $this->hasMany(BreakTime::class);
@@ -38,6 +35,4 @@ class AttendanceRecord extends Model
     {
         return $this->hasMany(AttendanceCorrectionRequest::class);
     }
-
 }
-

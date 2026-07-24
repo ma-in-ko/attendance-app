@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
-use App\Models\AttendanceRecord;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\AttendanceRecord;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminRequestTest extends TestCase
 {
@@ -49,8 +49,8 @@ class AdminRequestTest extends TestCase
         $response->assertSee([
             '承認待ち',
             $user->name,
-            'テスト'
-            ]);
+            'テスト',
+        ]);
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class AdminRequestTest extends TestCase
             'user_id' => $user->id,
             'work_date' => Carbon::today(),
             'clock_in' => Carbon::today()->setTime(9, 0),
-            'clock_out'=> Carbon::today()->setTime(18, 0),
+            'clock_out' => Carbon::today()->setTime(18, 0),
         ]);
 
         AttendanceCorrectionRequest::create([
@@ -82,7 +82,7 @@ class AdminRequestTest extends TestCase
 
         $response = $this->get(route('request.index', [
             'tab' => 'approved',
-            ],
+        ],
         ));
 
         $response->assertStatus(200);
@@ -126,11 +126,11 @@ class AdminRequestTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSee([
-                $user->name,
-                '09:00',
-                '10:00',
-                'テスト',
-            ]);
+            $user->name,
+            '09:00',
+            '10:00',
+            'テスト',
+        ]);
     }
 
     /** @test */
@@ -141,7 +141,7 @@ class AdminRequestTest extends TestCase
         $admin = User::factory()->create([
             'admin_status' => true,
             'email_verified_at' => now(),
-            ]);
+        ]);
 
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,

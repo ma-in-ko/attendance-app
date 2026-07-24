@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\AdminAttendanceCorrectionRequestController;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
-use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\AdminAttendanceController;
-use App\Http\Controllers\AdminStaffController;
-use App\Http\Controllers\AdminAttendanceCorrectionRequestController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,19 +19,18 @@ use App\Http\Controllers\AdminAttendanceCorrectionRequestController;
 |
 */
 
-
 Route::get('/admin/login', function () {
     return view('admin.login');
 });
 
 Route::post('/admin/login', [AdminAuthController::class, 'login'])
-->name('admin.login');
+    ->name('admin.login');
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect()->route('login');
 });
 
-Route::middleware('auth', 'verified')->group(function (){
+Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
 
@@ -61,31 +60,31 @@ Route::middleware('auth', 'verified')->group(function (){
         )->index(request());
     })->name('request.index');
 
-    Route::post('/attendance/{attendance}/request',[AttendanceController::class, 'store'])->name('attendance.request');
+    Route::post('/attendance/{attendance}/request', [AttendanceController::class, 'store'])->name('attendance.request');
 
-    });
+});
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.list');
 
     Route::get('/admin/attendance/{attendance}', [AdminAttendanceController::class, 'detail'])
-    ->name('admin.attendance.detail');
+        ->name('admin.attendance.detail');
 
     Route::put('/admin/attendance/{attendance}', [AdminAttendanceController::class, 'update'])
         ->name('admin.attendance.update');
 
     Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])
-    ->name('admin.staff.list');
+        ->name('admin.staff.list');
 
     Route::get('/admin/attendance/staff/{user}', [AdminStaffController::class, 'attendance'])
-    ->name('admin.staff.attendance');
+        ->name('admin.staff.attendance');
 
     Route::get('/admin/attendance/staff/{user}/csv', [AdminStaffController::class, 'export'])->name('admin.staff.export');
 
     Route::get('/stamp_correction_request/approve/{id}', [AdminAttendanceCorrectionRequestController::class, 'show'])
-    ->name('admin.request.show');
+        ->name('admin.request.show');
 
     Route::post('/stamp_correction_request/approve/{id}', [AdminAttendanceCorrectionRequestController::class, 'approve'])
-    ->name('admin.request.approve');
+        ->name('admin.request.approve');
 });

@@ -33,7 +33,7 @@
                 id="email"
                 name="email"
                 value="{{ old('email') }}">
-            @error('email')
+            @error("email")
             <p class="error">{{ $message }}</p>
             @enderror
         </div>

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\BreakTime;
 use App\Models\AttendanceRecord;
+use App\Models\BreakTime;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -20,7 +20,7 @@ class AttendanceSeeder extends Seeder
 
         $user3 = User::where('email', 'user3@example.com')->first();
 
-        if (!$user1 || !$user2 || !$user3) {
+        if (! $user1 || ! $user2 || ! $user3) {
             return;
         }
 
@@ -37,15 +37,15 @@ class AttendanceSeeder extends Seeder
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,
             'work_date' => $date->toDateString(),
-            'clock_in' => Carbon::parse($date->format('Y-m-d') . ' ' . $clockIn),
-            'clock_out' => Carbon::parse($date->format('Y-m-d') . ' ' . $clockOut),
+            'clock_in' => Carbon::parse($date->format('Y-m-d').' '.$clockIn),
+            'clock_out' => Carbon::parse($date->format('Y-m-d').' '.$clockOut),
             'note' => null,
         ]);
 
         BreakTime::create([
             'attendance_record_id' => $attendance->id,
-            'break_start' => Carbon::parse($date->format('Y-m-d') . ' 12:00'),
-            'break_end' => Carbon::parse($date->format('Y-m-d') . ' 13:00'),
+            'break_start' => Carbon::parse($date->format('Y-m-d').' 12:00'),
+            'break_end' => Carbon::parse($date->format('Y-m-d').' 13:00'),
         ]);
     }
 
@@ -62,7 +62,7 @@ class AttendanceSeeder extends Seeder
 
             while ($date->month === $targetMonth->month) {
 
-                if (!$date->isWeekend()) {
+                if (! $date->isWeekend()) {
                     $workDays->push($date->copy());
                 }
 
@@ -91,7 +91,7 @@ class AttendanceSeeder extends Seeder
             }
         }
     }
-    
+
     private function createCurrentMonth(User $user): void
     {
         $date = now()->startOfMonth();
@@ -122,7 +122,7 @@ class AttendanceSeeder extends Seeder
 
         foreach ($patterns as $pattern) {
 
-            while($date->isWeekend()) {
+            while ($date->isWeekend()) {
                 $date->addDay();
             }
 
@@ -146,7 +146,7 @@ class AttendanceSeeder extends Seeder
 
         while ($count < 17) {
 
-            if (!$date->isWeekend()) {
+            if (! $date->isWeekend()) {
                 $this->createAttendance(
                     $user,
                     $date->copy(),

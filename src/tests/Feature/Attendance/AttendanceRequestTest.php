@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
-use App\Models\AttendanceRecord;
-use App\Models\BreakTime;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\AttendanceRecord;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceRequestTest extends TestCase
 {
@@ -17,7 +16,7 @@ class AttendanceRequestTest extends TestCase
     /** @test */
     public function 出勤時間が退勤時間より後になっている場合、エラーメッセージが表示される()
     {
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,
@@ -30,10 +29,10 @@ class AttendanceRequestTest extends TestCase
 
         $response = $this->followingRedirects()
             ->from(route('attendance.show', $attendance))
-            ->post(route('attendance.request', $attendance),[
+            ->post(route('attendance.request', $attendance), [
                 'requested_clock_in' => '15:00',
                 'requested_clock_out' => '14:00',
-            'reason' => 'テスト',
+                'reason' => 'テスト',
             ]);
 
         $response->assertSee('出勤時間もしくは退勤時間が不適切な値です');
@@ -50,7 +49,6 @@ class AttendanceRequestTest extends TestCase
             'clock_in' => Carbon::create(2026, 7, 20, 9, 0),
             'clock_out' => Carbon::create(2026, 7, 20, 18, 0),
         ]);
-
 
         $this->actingAs($user);
 
@@ -71,7 +69,7 @@ class AttendanceRequestTest extends TestCase
                 'reason' => 'テスト',
             ]);
 
-            $response->assertSee('休憩時間が不適切な値です');
+        $response->assertSee('休憩時間が不適切な値です');
     }
 
     /** @test */
@@ -81,7 +79,7 @@ class AttendanceRequestTest extends TestCase
 
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,
-            'work_date' => Carbon::create(2026,7,20),
+            'work_date' => Carbon::create(2026, 7, 20),
             'clock_in' => Carbon::create(2026, 7, 20, 9, 0),
             'clock_out' => Carbon::create(2026, 7, 20, 18, 0),
         ]);
@@ -104,33 +102,33 @@ class AttendanceRequestTest extends TestCase
                 'reason' => 'テスト',
             ]);
 
-            $response->assertSee('休憩時間もしくは退勤時間が不適切な値です');
+        $response->assertSee('休憩時間もしくは退勤時間が不適切な値です');
     }
 
     /** @test */
     public function 備考欄が未入力の場合、エラーメッセージが表示される()
-        {
-            $user = User::factory()->create();
+    {
+        $user = User::factory()->create();
 
-            $attendance = AttendanceRecord::create([
-                'user_id' => $user->id,
-                'work_date' => Carbon::create(2026, 7, 21),
-                'clock_in' => Carbon::create(2026, 7, 21, 9, 0),
-                'clock_out' => Carbon::create(2026, 7, 21, 18),
+        $attendance = AttendanceRecord::create([
+            'user_id' => $user->id,
+            'work_date' => Carbon::create(2026, 7, 21),
+            'clock_in' => Carbon::create(2026, 7, 21, 9, 0),
+            'clock_out' => Carbon::create(2026, 7, 21, 18),
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->followingRedirects()
+            ->from(route('attendance.show', $attendance))
+            ->post(route('attendance.request', $attendance), [
+                'requested_clock_in' => '09:00',
+                'requested_clock_out' => '17:00',
+                'reason' => '',
             ]);
 
-            $this->actingAs($user);
-
-            $response = $this->followingRedirects()
-                ->from(route('attendance.show', $attendance))
-                ->post(route('attendance.request', $attendance), [
-                    'requested_clock_in' => '09:00',
-                    'requested_clock_out' => '17:00',
-                    'reason' => '',
-                ]);
-
-            $response->assertSee('備考を記入してください');
-        }
+        $response->assertSee('備考を記入してください');
+    }
 
     /** @test */
     public function 修正申請処理が実行される()
@@ -157,7 +155,7 @@ class AttendanceRequestTest extends TestCase
             ->from(route('attendance.show', $attendance))
             ->post(route('attendance.request', $attendance), [
                 'requested_clock_in' => '09:30',
-                'requested_clock_out' =>'18:00',
+                'requested_clock_out' => '18:00',
                 'reason' => '電車遅延のため',
             ]);
 
@@ -182,7 +180,7 @@ class AttendanceRequestTest extends TestCase
 
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,
-            'work_date'=> Carbon::create(2026, 7, 21),
+            'work_date' => Carbon::create(2026, 7, 21),
             'clock_in' => Carbon::create(2026, 7, 21, 9, 0),
             'clock_out' => Carbon::create(2026, 7, 21, 18, 0),
         ]);
@@ -193,8 +191,8 @@ class AttendanceRequestTest extends TestCase
             ->from(route('attendance.show', $attendance))
             ->post(route('attendance.request', $attendance), [
                 'requested_clock_in' => '09:30',
-                'requested_clock_out' =>'18:00',
-                'reason' => '電車遅延のため'
+                'requested_clock_out' => '18:00',
+                'reason' => '電車遅延のため',
             ]);
 
         $response = $this->get(route('request.index'));
@@ -217,7 +215,7 @@ class AttendanceRequestTest extends TestCase
 
         $attendance = AttendanceRecord::create([
             'user_id' => $user->id,
-            'work_date' => Carbon::create(2026, 7,  21),
+            'work_date' => Carbon::create(2026, 7, 21),
             'clock_in' => Carbon::create(2026, 7, 21, 9, 0),
             'clock_out' => Carbon::create(2026, 7, 21, 18, 0),
         ]);
@@ -260,29 +258,29 @@ class AttendanceRequestTest extends TestCase
 
     /** @test */
     public function 各申請の「詳細」を押下すると勤怠詳細画面に遷移する()
-        {
-            $user = User::factory()->create([
-                'email_verified_at' => now(),
-            ]);
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
 
-            $attendance = AttendanceRecord::create([
-                'user_id' => $user->id,
-                'work_date' => Carbon::create(2026, 7, 21),
-                'clock_in' => Carbon::create(2026, 7, 21, 9, 0),
-                'clock_out'=> Carbon::create(2026, 7, 21, 18, 0),
-            ]);
+        $attendance = AttendanceRecord::create([
+            'user_id' => $user->id,
+            'work_date' => Carbon::create(2026, 7, 21),
+            'clock_in' => Carbon::create(2026, 7, 21, 9, 0),
+            'clock_out' => Carbon::create(2026, 7, 21, 18, 0),
+        ]);
 
-            $this->actingAs($user);
+        $this->actingAs($user);
 
-            $this->post(route('attendance.request', $attendance), [
-                    'requested_clock_in' => '09:30',
-                    'requested_clock_out' => '18:00',
-                    'reason' => '電車遅延のため',
-                ]);
+        $this->post(route('attendance.request', $attendance), [
+            'requested_clock_in' => '09:30',
+            'requested_clock_out' => '18:00',
+            'reason' => '電車遅延のため',
+        ]);
 
-            $response = $this->get(route('attendance.show', $attendance));
+        $response = $this->get(route('attendance.show', $attendance));
 
-            $response->assertStatus(200);
-            $response->assertSee($user->name);
-        }
+        $response->assertStatus(200);
+        $response->assertSee($user->name);
+    }
 }

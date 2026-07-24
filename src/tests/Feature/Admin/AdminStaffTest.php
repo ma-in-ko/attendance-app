@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakTime;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminStaffTest extends TestCase
 {
@@ -31,16 +31,15 @@ class AdminStaffTest extends TestCase
 
         $response = $this->get(route('admin.staff.list'));
 
-
         $response->assertStatus(200);
 
         $response->assertSee([
-                $user1->name,
-                $user2->name,
-                $user3->name,
-                $user1->email,
-                $user2->email,
-                $user3->email,
+            $user1->name,
+            $user2->name,
+            $user3->name,
+            $user1->email,
+            $user2->email,
+            $user3->email,
         ]);
     }
 
@@ -71,7 +70,6 @@ class AdminStaffTest extends TestCase
 
         $response = $this->get(route('admin.staff.attendance', $user));
 
-
         $response->assertStatus(200);
         $response->assertSee($user->name);
         $response->assertSee([
@@ -81,7 +79,7 @@ class AdminStaffTest extends TestCase
             '01:00',
             '8:00',
             '詳細',
-            ]);
+        ]);
     }
 
     /** @test */
@@ -106,7 +104,7 @@ class AdminStaffTest extends TestCase
         $response = $this->get(route('admin.staff.attendance', [
             'user' => $user,
             'month' => Carbon::today()->subMonth()->format('Y-m'),
-            ]));
+        ]));
 
         $response->assertStatus(200);
 
@@ -137,14 +135,14 @@ class AdminStaffTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->get(route('admin.staff.attendance',[
+        $response = $this->get(route('admin.staff.attendance', [
             'user' => $user->id,
             'month' => Carbon::today()->addMonth()->format('Y-m'),
         ]));
 
         $response->assertStatus(200);
 
-        $response->assertSee( Carbon::today()->addMonth()->format('Y/m'));
+        $response->assertSee(Carbon::today()->addMonth()->format('Y/m'));
 
         $response->assertSee('09:00');
         $response->assertSee('18:00');
@@ -183,7 +181,7 @@ class AdminStaffTest extends TestCase
 
         $response->assertSee(Carbon::today()->format('Y年'));
         $response->assertSee(Carbon::today()->format('n月j日'));
-        
+
         $response->assertSee([
             '09:00',
             '18:00',

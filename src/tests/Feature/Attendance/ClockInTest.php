@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,7 +24,7 @@ class ClockInTest extends TestCase
 
         $this->assertDatabaseHas('attendance_records', [
             'user_id' => $user->id,
-            'work_date' =>today(),
+            'work_date' => today(),
         ]);
 
         $response = $this->get(route('attendance.create'));
@@ -57,7 +57,6 @@ class ClockInTest extends TestCase
     {
         $user = User::factory()->create();
 
-
         $this->actingAs($user);
 
         $this->post(route('attendance.clock-in'));
@@ -72,5 +71,4 @@ class ClockInTest extends TestCase
             \Carbon\Carbon::parse($attendance->clock_in)->format('H:i')
         );
     }
-
 }

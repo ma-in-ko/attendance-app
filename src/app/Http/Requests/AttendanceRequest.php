@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AttendanceRequest extends FormRequest
 {
@@ -49,7 +49,7 @@ class AttendanceRequest extends FormRequest
             $clockIn = $this->requested_clock_in;
             $clockOut = $this->requested_clock_out;
 
-            if (!$clockIn || !$clockOut) {
+            if (! $clockIn || ! $clockOut) {
                 return;
             }
 
@@ -64,9 +64,9 @@ class AttendanceRequest extends FormRequest
 
                 // 休憩開始が勤務開始前
                 if (
-                    !empty($break['break_start']) &&
+                    ! empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
-                    ->lt(Carbon::parse($clockIn))
+                        ->lt(Carbon::parse($clockIn))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_start",
@@ -76,9 +76,9 @@ class AttendanceRequest extends FormRequest
 
                 // 休憩開始が勤務終了後
                 if (
-                    !empty($break['break_start']) &&
+                    ! empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
-                    ->gt(Carbon::parse($clockOut))
+                        ->gt(Carbon::parse($clockOut))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_start",
@@ -88,9 +88,9 @@ class AttendanceRequest extends FormRequest
 
                 // 休憩終了が勤務終了後
                 if (
-                    !empty($break['break_end']) &&
+                    ! empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
-                    ->gt(Carbon::parse($clockOut))
+                        ->gt(Carbon::parse($clockOut))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
@@ -98,12 +98,12 @@ class AttendanceRequest extends FormRequest
                     );
                 }
 
-                //休憩終了が休憩開始前
+                // 休憩終了が休憩開始前
                 if (
-                    !empty($break['break_start']) &&
-                    !empty($break['break_end']) &&
+                    ! empty($break['break_start']) &&
+                    ! empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
-                    ->lt(Carbon::parse($break['break_start']))
+                        ->lt(Carbon::parse($break['break_start']))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
@@ -116,7 +116,7 @@ class AttendanceRequest extends FormRequest
 
     public function messages(): array
     {
-        return[
+        return [
             'requested_clock_in.required' => '出勤時間を入力してください',
             'requested_clock_out.required' => '退勤時間を入力してください',
             'requested_clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',

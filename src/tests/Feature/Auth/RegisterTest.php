@@ -12,7 +12,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function 名前が未入力の場合バリデーションメッセージが表示される()
     {
-        $response =$this->post('/register', [
+        $response = $this->post('/register', [
             'name' => '',
             'email' => 'test@example.com',
             'password' => 'password',
@@ -20,10 +20,9 @@ class RegisterTest extends TestCase
 
         ]);
 
-
         $response->assertSessionHasErrors([
-            'name'=> 'お名前を入力してください',
-            ]);
+            'name' => 'お名前を入力してください',
+        ]);
     }
 
     /** @test */
@@ -36,7 +35,6 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password',
 
         ]);
-
 
         $response->assertSessionHasErrors([
             'email' => 'メールアドレスを入力してください',
@@ -54,7 +52,6 @@ class RegisterTest extends TestCase
 
         ]);
 
-
         $response->assertSessionHasErrors([
             'password' => 'パスワードは8文字以上で入力してください',
         ]);
@@ -71,7 +68,6 @@ class RegisterTest extends TestCase
 
         ]);
 
-
         $response->assertSessionHasErrors([
             'password' => 'パスワードと一致しません',
         ]);
@@ -87,7 +83,6 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password',
 
         ]);
-
 
         $response->assertSessionHasErrors([
             'password' => 'パスワードを入力してください',
@@ -112,5 +107,4 @@ class RegisterTest extends TestCase
 
         $response->assertRedirect('/attendance');
     }
-
 }

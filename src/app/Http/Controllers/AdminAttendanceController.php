@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminAttendanceRequest;
+use App\Models\AttendanceCorrectionRequest;
+use App\Models\AttendanceRecord;
+use App\Models\BreakTime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\AttendanceRecord;
-use App\Models\AttendanceCorrectionRequest;
-use App\Models\BreakTime;
-use App\Http\Requests\AdminAttendanceRequest;
-
 
 class AdminAttendanceController extends Controller
 {
     public function index(Request $request)
     {
         $currentDay = $request->day
-            ?Carbon::parse($request->day)
-            :now();
+            ? Carbon::parse($request->day)
+            : now();
 
         $attendances = AttendanceRecord::with('user', 'breakTimes')->whereDate('work_date', $currentDay)
-        ->get();
-
+            ->get();
 
         return view('admin.attendance.index', compact(
             'currentDay',
@@ -46,8 +44,8 @@ class AdminAttendanceController extends Controller
 
     public function update(
         AdminAttendanceRequest $request,
-        AttendanceRecord $attendance)
-    {
+        AttendanceRecord $attendance
+    ) {
         $date = $attendance->work_date->format('Y-m-d');
 
         $clockIn = Carbon::parse(
@@ -80,15 +78,13 @@ class AdminAttendanceController extends Controller
             BreakTime::create([
                 'attendance_record_id' => $attendance->id,
 
-                'break_start' => $attendance->work_date->format('Y-m-d')
-                    . ' ' . $break['break_start'],
+                'break_start' => $date . ' ' . $break['break_start'],
 
-                'break_end' => $attendance->work_date->format('Y-m-d')
-                    . ' ' . $break['break_end'],
+                'break_end' => $date . ' ' . $break['break_end'],
             ]);
         }
 
         return redirect()->route('admin.attendance.list')
-        ->with('success', '勤怠情報を更新しました');
+            ->with('success', '勤怠情報を更新しました');
     }
 }

@@ -15,7 +15,7 @@
             承認待ち
         </a>
 
-        <a class="correction__tab {{$status === 'approved' ? 'active' : '' }}"
+        <a class="correction__tab {{ $status === 'approved' ? 'active' : '' }}"
             href="{{ route('request.index', ['status' => 'approved']) }}">
             承認済み
         </a>
@@ -29,7 +29,7 @@
                 <th>名前</th>
                 <th>対象日時</th>
                 <th>申請理由</th>
-                <th>申請日次</th>
+                <th>申請日時</th>
                 <th>詳細</th>
             </tr>
         </thead>

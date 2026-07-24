@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -46,7 +46,7 @@ class ClockOutTest extends TestCase
 
         $this->post(route('attendance.clock-out'));
 
-        $attendance = AttendanceRecord::where('user_id',$user->id)
+        $attendance = AttendanceRecord::where('user_id', $user->id)
             ->whereDate('work_date', today())
             ->first();
 

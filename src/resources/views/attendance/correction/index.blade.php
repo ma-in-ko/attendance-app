@@ -18,7 +18,7 @@
             承認待ち
         </a>
 
-        <a class="correction__tab {{$status === 'approved' ? 'active' : '' }}"
+        <a class="correction__tab {{ $status === 'approved' ? 'active' : '' }}"
         href="{{ route('request.index', ['status' => 'approved']) }}">
             承認済み
         </a>
@@ -57,7 +57,7 @@
 
 
                 <td>
-                    {{ Carbon\Carbon::parse($request->attendanceRecord->work_date)->format('Y/m/d') }}
+                    {{ $request->attendanceRecord->work_date->format('Y/m/d') }}
                 </td>
 
 

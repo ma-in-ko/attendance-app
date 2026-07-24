@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AttendanceCorrectionRequest;
+use Illuminate\Http\Request;
 
 class AttendanceCorrectionRequestController extends Controller
 {
@@ -13,14 +13,14 @@ class AttendanceCorrectionRequestController extends Controller
 
         $requests =
             AttendanceCorrectionRequest::with('attendanceRecord.user')
-            ->whereHas('attendanceRecord', function ($query) {
-                $query->where('user_id', auth()->id());
-            })
-            ->where(
-                'is_approved',
-                $status === 'approved'
-            )
-            ->get();
+                ->whereHas('attendanceRecord', function ($query) {
+                    $query->where('user_id', auth()->id());
+                })
+                ->where(
+                    'is_approved',
+                    $status === 'approved'
+                )
+                ->get();
 
         return view(
             'attendance.correction.index',

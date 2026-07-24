@@ -2,19 +2,19 @@
 
 namespace Tests\Feature\Attendance;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakTime;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function 現在の日時情報がUIと同じ形式で出力されている()
+    public function 現在の日時情報が_u_iと同じ形式で出力されている()
     {
         Carbon::setTestNow(Carbon::parse('2026-07-20 09:30:00'));
 
@@ -29,6 +29,7 @@ class CreateTest extends TestCase
         $response->assertSee('09:30');
 
     }
+
     /** @test */
     public function 勤務外の場合、勤怠ステータスが正しく表示される()
     {

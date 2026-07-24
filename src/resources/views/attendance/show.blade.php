@@ -29,11 +29,11 @@
                     <td>
                         <div class="detail__content">
                             <span class="detail__box year">
-                                {{ Carbon\Carbon::parse($attendance->work_date)->format('Y年') }}
+                                {{ $attendance->work_date->format('Y年') }}
                             </span>
                             <span></span>
                             <span class="detail__box date">
-                                {{ Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}
+                                {{ $attendance->work_date->format('n月j日') }}
                             </span>
                         </div>
                     </td>

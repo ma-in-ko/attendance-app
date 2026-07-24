@@ -1,12 +1,13 @@
 <?php
+
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakTime;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminAttendanceTest extends TestCase
 {
@@ -39,7 +40,7 @@ class AdminAttendanceTest extends TestCase
             'user_id' => $user2->id,
             'work_date' => Carbon::today(),
             'clock_in' => Carbon::today()->setTime(10, 0),
-            'clock_out'=> Carbon::today()->setTime(19, 0),
+            'clock_out' => Carbon::today()->setTime(19, 0),
         ]);
 
         $this->actingAs($admin);
@@ -93,7 +94,7 @@ class AdminAttendanceTest extends TestCase
             'user_id' => $user->id,
             'work_date' => Carbon::today()->subDay(),
             'clock_in' => Carbon::today()->subDay()->setTime(9, 0),
-            'clock_out'=> Carbon::today()->subDay()->setTime(18, 0),
+            'clock_out' => Carbon::today()->subDay()->setTime(18, 0),
         ]);
 
         $this->actingAs($admin);
@@ -187,7 +188,7 @@ class AdminAttendanceTest extends TestCase
             'user_id' => $user->id,
             'work_date' => Carbon::today(),
             'clock_in' => Carbon::today()->setTime(9, 0),
-            'clock_out'=> Carbon::today()->setTime(18, 0),
+            'clock_out' => Carbon::today()->setTime(18, 0),
         ]);
 
         BreakTime::create([
@@ -199,10 +200,10 @@ class AdminAttendanceTest extends TestCase
         $this->actingAs($admin);
 
         $response = $this->from(route('admin.attendance.detail', $attendance))
-            ->put(route('admin.attendance.update',$attendance),  [
+            ->put(route('admin.attendance.update', $attendance), [
                 'clock_in' => '19:00',
                 'clock_out' => '18:00',
-                'note' => 'テスト'
+                'note' => 'テスト',
             ]);
 
         $response->assertRedirect(route('admin.attendance.detail', $attendance));
@@ -284,7 +285,7 @@ class AdminAttendanceTest extends TestCase
         $this->actingAs($admin);
 
         $response = $this->from(route('admin.attendance.detail', $attendance))
-            ->put(route('admin.attendance.update' , $attendance), [
+            ->put(route('admin.attendance.update', $attendance), [
                 'clock_in' => '09:00',
                 'clock_out' => '18:00',
                 'breaks' => [
@@ -296,10 +297,10 @@ class AdminAttendanceTest extends TestCase
                 'note' => 'テスト',
             ]);
 
-        $response-> assertRedirect(route('admin.attendance.detail', $attendance));
+        $response->assertRedirect(route('admin.attendance.detail', $attendance));
 
-        $response -> assertSessionHasErrors([
-            'breaks.0.break_end' => '休憩時間もしくは退勤時間が不適切な値です'
+        $response->assertSessionHasErrors([
+            'breaks.0.break_end' => '休憩時間もしくは退勤時間が不適切な値です',
         ]);
     }
 
@@ -317,7 +318,7 @@ class AdminAttendanceTest extends TestCase
             'user_id' => $user->id,
             'work_date' => Carbon::today(),
             'clock_in' => Carbon::today()->setTime(9, 0),
-            'clock_out'=> Carbon::today()->setTime(18, 0),
+            'clock_out' => Carbon::today()->setTime(18, 0),
         ]);
 
         BreakTime::create([
@@ -344,7 +345,7 @@ class AdminAttendanceTest extends TestCase
         $response->assertRedirect(route('admin.attendance.detail', $attendance));
 
         $response->assertSessionHasErrors([
-            'note' =>'備考を記入してください'
+            'note' => '備考を記入してください',
         ]);
     }
 }

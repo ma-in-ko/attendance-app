@@ -7,14 +7,14 @@
 @section('content')
 
 <div class="attendance">
-    <h1>{{ $currentDay -> format('Y年n月j日') }}の勤怠</h1>
+    <h1>{{ $currentDay->format('Y年n月j日') }}の勤怠</h1>
 
     <div class="date-nav">
         <a href="{{ route('admin.attendance.list', ['day' => $currentDay->copy()->subDay()->format('Y-m-d')]) }}">
             ←前日
         </a>
         <span class="nav__current">
-            📅{{ $currentDay -> format('Y/m/d') }}
+            📅{{ $currentDay->format('Y/m/d') }}
         </span>
 
         <a href="{{ route('admin.attendance.list', ['day' => $currentDay->copy()->addDay()->format('Y-m-d')]) }}">
@@ -86,7 +86,7 @@
 
             <tr>
                 <td>
-                        {{$attendance->user->name }}
+                    {{$attendance->user->name }}
                 </td>
                 <td>{{ $attendance->clock_in
                         ?\Carbon\Carbon::parse($attendance->clock_in)->format('H:i')

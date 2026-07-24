@@ -24,7 +24,7 @@
                 <td>{{ $user->email }}</td>
                 <td>
                     <a href="{{ route('admin.staff.attendance', $user) }}">
-                        詳細
+                    詳細
                     </a>
                 </td>
             </tr>

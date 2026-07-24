@@ -30,11 +30,11 @@
                     <td>
                         <div class="correction-detail__content">
                             <span class="correction-detail__box">
-                                {{ Carbon\Carbon::parse($attendanceCorrectionRequest->attendanceRecord->work_date)->format('Y年') }}
+                                {{ $attendanceCorrectionRequest->attendanceRecord->work_date->format('Y年') }}
                             </span>
                             <span class="correction-detail__separator"></span>
                             <span class="correction-detail__box">
-                                {{ Carbon\Carbon::parse($attendanceCorrectionRequest->attendanceRecord->work_date)->format('n月j日') }}
+                                {{ $attendanceCorrectionRequest->attendanceRecord->work_date->format('n月j日') }}
                             </span>
                         </div>
                     </td>
@@ -81,8 +81,6 @@
                 </tr>
 
                 @endforeach
-
-                <tr>
 
                 <tr>
                     <th>備考</th>
