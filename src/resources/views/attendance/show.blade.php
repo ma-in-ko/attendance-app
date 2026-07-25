@@ -45,30 +45,37 @@
                         <div class="time__content">
 
                             @if($pendingRequest)
+
                             <span class="detail__box time">
-                                {{ Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}
+                                {{ Carbon\Carbon::parse($pendingRequest->requested_clock_in)->format('H:i') }}
                             </span>
 
                             <span class="detail__separator">～</span>
 
                             <span class="detail__box time">
-                                {{ $attendance->clock_out ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+                                {{ $pendingRequest->requested_clock_out ? Carbon\Carbon::parse($pendingRequest->requested_clock_out)->format('H:i') : '' }}
                             </span>
+
                             @else
+
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_in"
                                 value="{{ old('requested_clock_in', Carbon\Carbon::parse($attendance->clock_in)->format('H:i')) }}">
+
                             <span class="detail__separator">
                                 ～
                             </span>
+
                             <input class="detail__box time"
                                 type="time"
                                 name="requested_clock_out"
                                 value="{{old('requested_clock_out', $attendance->clock_out
                                     ? Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
                                 : '') }}">
+
                             @endif
+
                         </div>
 
                         @if ($errors->has('requested_clock_in') || $errors->has('requested_clock_out'))
@@ -77,7 +84,13 @@
                     </td>
                 </tr>
 
-                @foreach($attendance->breakTimes as $index => $breakTime)
+                @php
+                $breakTimes = $pendingRequest
+                ? $pendingRequest->attendanceCorrectionBreaks
+                : $attendance->breakTimes;
+                @endphp
+
+                @foreach($breakTimes as $index => $breakTime)
 
                 <tr>
                     <th>
@@ -118,6 +131,7 @@
                                     : '') }}">
 
                             @endif
+
                         </div>
 
 
@@ -134,11 +148,13 @@
 
                 @endforeach
 
+
                 @php
                 $newIndex = $attendance->breakTimes->count();
                 @endphp
 
                 @if(!$pendingRequest)
+
                 <tr>
                     <th>
                         休憩{{ $newIndex + 1 }}
@@ -185,7 +201,7 @@
                         @if($pendingRequest)
 
                         <span class="note-text">
-                            {{ $attendance->note }}
+                            {{ $pendingRequest->reason }}
                         </span>
 
                         @else

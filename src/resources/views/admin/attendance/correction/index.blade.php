@@ -11,12 +11,12 @@
     <div class="correction__tabs">
 
         <a class="correction__tab {{ $status === 'pending' ? 'active' : '' }}"
-            href="{{ route('request.index', ['status' => 'pending']) }}">
+            href="{{ route('request.index', ['tab' => 'pending']) }}">
             承認待ち
         </a>
 
         <a class="correction__tab {{ $status === 'approved' ? 'active' : '' }}"
-            href="{{ route('request.index', ['status' => 'approved']) }}">
+            href="{{ route('request.index', ['tab' => 'approved']) }}">
             承認済み
         </a>
 

@@ -152,7 +152,8 @@ class AttendanceController extends Controller
             $attendance->id
         )
             ->where('is_approved', false)
-            ->exists();
+            ->with('attendanceCorrectionBreaks')
+            ->first();
 
         return view('attendance.show', compact(
             'attendance',

@@ -77,7 +77,7 @@ class AdminAttendanceTest extends TestCase
         $response = $this->get(route('admin.attendance.list'));
 
         $response->assertStatus(200);
-        $response->assertSee(now()->format('Y年m月d日'));
+        $response->assertSee(now()->format('Y年n月j日'));
     }
 
     /** @test */
@@ -104,7 +104,7 @@ class AdminAttendanceTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee(Carbon::today()->subDay()->format('Y年m月d日'));
+        $response->assertSee(Carbon::today()->subDay()->format('Y年n月j日'));
         $response->assertSee($user->name);
     }
 
@@ -133,7 +133,7 @@ class AdminAttendanceTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee(Carbon::today()->addDay()->format('Y年m月d日'));
+        $response->assertSee(Carbon::today()->addDay()->format('Y年n月j日'));
         $response->assertSee($user->name);
 
     }
