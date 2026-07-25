@@ -77,6 +77,8 @@ docker compose up -d --build
 
 ### Laravelセットアップ
 
+以下のコマンドは docker compose exec php bash でPHPコンテナに入った状態で実行してください。
+
 ```
 docker compose exec php bash
 cd src
@@ -85,8 +87,6 @@ cp .env.example .env
 php artisan key:generate
 
 ```
-
-cp .env.example .env
 
 .envファイルに以下を設定してください
 
@@ -160,7 +160,7 @@ FormRequestを使用してバリデーションを実装しています。
 PHPUnitを用いて単体テストを実施しています。
 
 ```
-php artisan test
+docker compose exec php php artisan test
 ```
 
 または
