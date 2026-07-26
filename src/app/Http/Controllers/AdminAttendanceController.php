@@ -49,11 +49,11 @@ class AdminAttendanceController extends Controller
         $date = $attendance->work_date->format('Y-m-d');
 
         $clockIn = Carbon::parse(
-            $date . ' ' . $request->clock_in
+            $date.' '.$request->clock_in
         );
 
         $clockOut = Carbon::parse(
-            $date . ' ' . $request->clock_out
+            $date.' '.$request->clock_out
         );
 
         $attendance->update([
@@ -78,9 +78,9 @@ class AdminAttendanceController extends Controller
             BreakTime::create([
                 'attendance_record_id' => $attendance->id,
 
-                'break_start' => $date . ' ' . $break['break_start'],
+                'break_start' => $date.' '.$break['break_start'],
 
-                'break_end' => $date . ' ' . $break['break_end'],
+                'break_end' => $date.' '.$break['break_end'],
             ]);
         }
 

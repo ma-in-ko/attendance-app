@@ -69,7 +69,7 @@ class AdminAttendanceRequest extends FormRequest
                 if (
                     ! empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
-                    ->lt(Carbon::parse($clockIn))
+                        ->lt(Carbon::parse($clockIn))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_start",
@@ -81,7 +81,7 @@ class AdminAttendanceRequest extends FormRequest
                 if (
                     ! empty($break['break_start']) &&
                     Carbon::parse($break['break_start'])
-                    ->gt(Carbon::parse($clockOut))
+                        ->gt(Carbon::parse($clockOut))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_start",
@@ -93,7 +93,7 @@ class AdminAttendanceRequest extends FormRequest
                 if (
                     ! empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
-                    ->gt(Carbon::parse($clockOut))
+                        ->gt(Carbon::parse($clockOut))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",
@@ -106,7 +106,7 @@ class AdminAttendanceRequest extends FormRequest
                     ! empty($break['break_start']) &&
                     ! empty($break['break_end']) &&
                     Carbon::parse($break['break_end'])
-                    ->lt(Carbon::parse($break['break_start']))
+                        ->lt(Carbon::parse($break['break_start']))
                 ) {
                     $validator->errors()->add(
                         "breaks.$index.break_end",

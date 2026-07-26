@@ -67,7 +67,7 @@
 
 ## 環境構築
 
-### Dockerビルド
+### Dockerコンテナ起動
 
 ```
 git clone https://github.com/ma-in-ko/attendance-app.git
@@ -77,7 +77,7 @@ docker compose up -d --build
 
 ### Laravelセットアップ
 
-以下のコマンドは docker compose exec php bash でPHPコンテナに入った状態で実行してください。
+以下のコマンドは、PHPコンテナ内で実行してください。
 
 ```
 docker compose exec php bash
@@ -88,7 +88,7 @@ php artisan key:generate
 
 ```
 
-.envファイルに以下を設定してください
+.env ファイルに以下を設定してください
 
 ```
 DB_CONNECTION=mysql
@@ -128,7 +128,7 @@ php artisan migrate:fresh --seed
 - ログアウト
 - 管理者ログイン
 
-### メール認証（開発環境)
+### メール認証 (開発環境)
 
 開発環境ではMailHog を利用しています。
 
@@ -163,10 +163,10 @@ PHPUnitを用いて単体テストを実施しています。
 docker compose exec php php artisan test
 ```
 
-または
+特定のテストのみ実行する場合
 
 ```
-php artisan test --filter=○○
+php artisan test --filter=テスト名
 ```
 
 で実行できます。
@@ -192,4 +192,4 @@ php artisan test --filter=○○
 
 ## 作者
 
-作成者：中尾麻衣子
+中尾 麻衣子
