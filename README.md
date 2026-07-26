@@ -179,7 +179,7 @@ php artisan test --filter=テスト名
 
 ## ER図
 
-![ER図](docs/er.png)
+![ER図](er.png)
 
 ## 工夫した点
 
