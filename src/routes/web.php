@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
+use App\Http\Controllers\AttendanceReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::post('/attendance/{attendance}/request', [AttendanceController::class, 'store'])->name('attendance.request');
 
+    Route::get('/attendance/report', [AttendanceReportController::class, 'index'])->name('attendance.report');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
