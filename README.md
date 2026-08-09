@@ -140,6 +140,77 @@ php artisan migrate:fresh --seed
 
 FormRequestを使用してバリデーションを実装しています。
 
+## API
+
+Laravel Sanctumを使用した公開APIを実装しています。
+
+### エンドポイント
+
+| Method | URI | 説明 | 認証 |
+|---|---|---|---|
+| GET | /api/v1/attendance-records | 勤怠一覧取得 | 不要 |
+| GET | /api/v1/attendance-records/{attendanceRecord} | 勤怠詳細取得 | 不要 |
+| POST | /api/v1/attendance-records | 勤怠登録 | 必須 |
+| PUT/PATCH | /api/v1/attendance-records/{attendanceRecord} | 勤怠更新 | 必須 |
+| DELETE | /api/v1/attendance-records/{attendanceRecord} | 勤怠削除 | 必須 |
+
+### API 機能
+
+- 勤怠一覧の取得
+- ユーザーID・日付・年月による絞り込み
+- ページネーション
+- 勤怠詳細の取得
+- 勤怠の登録・更新・削除
+- バリデーションエラーのJSONレスポンス
+- SanctumによるAPIトークン認証
+- Policyによる操作権限の制御
+- API Resourceによるレスポンス整形
+- API用FormRequestによるバリデーション
+
+### API認証
+
+書き込み系API (POST / PUT / DELETE)はSanctumによるBearerトークン認証が必要です。
+
+Authorizationヘッダーには以下の形式でトークンを指定します。
+
+```text
+Authorization: Bearer {token}
+```
+
+### APIテスト
+
+Postmanを使用してAPIの動作確認を実施しています。
+
+- GET：勤怠一覧取得
+- GET：勤怠詳細取得
+- GET：存在しないIDの404エラー
+- POST：勤怠登録
+- POST：バリデーションエラー
+- PUT：勤怠更新
+- PUT：存在しないIDの404エラー
+- PUT：権限のない勤怠への操作で403エラー
+- DELETE：勤怠削除
+- DELETE：存在しないIDの404エラー
+- 未認証時の401エラー
+- user_idによる絞り込み
+- dateによる絞り込み
+- monthによる絞り込み
+- ページネーション
+
+## マイ勤怠レポート
+
+認証ユーザー向けに、勤怠データを集計したマイ勤怠レポートを表示します。
+
+- 総労働時間
+- 総残業時間
+- 平均労働時間
+- 遅刻回数
+- 早退回数
+- 長時間労働回数
+- 月別の勤務時間・残業時間
+
+未認証ユーザーがアクセスした場合は、ログイン画面へリダイレクトします。
+
 ## テスト用アカウント
 
 ### 一般ユーザー

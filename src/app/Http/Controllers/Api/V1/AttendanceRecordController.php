@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexAttendanceRecordRequest;
 use App\Http\Requests\Api\V1\StoreAttendanceRecordRequest;
 use App\Http\Requests\Api\V1\UpdateAttendanceRecordRequest;
+use Carbon\Carbon;
 
 class AttendanceRecordController extends Controller
 {
@@ -47,12 +48,24 @@ class AttendanceRecordController extends Controller
     {
         $validated = $request->validated();
 
+        $clockIn = Carbon::createFromFormat(
+            'Y-m-d H:i:s',
+            $validated['date'] . ' ' . $validated['clock_in']
+        );
+
+        $clockOut = !empty($validated['clock_out'])
+            ? Carbon::createFromFormat(
+                'Y-m-d H:i:s',
+                $validated['date'] . ' ' . $validated['clock_out']
+            )
+            : null;
+
         $attendanceRecord = $request->user()
             ->attendanceRecords()
             ->create([
                 'work_date' => $validated['date'],
-                'clock_in' => $validated['clock_in'],
-                'clock_out' => $validated['clock_out'] ?? null,
+                'clock_in' => $clockIn,
+                'clock_out' => $clockOut,
                 'note' => $validated['comment'] ?? null,
             ]);
 
@@ -85,12 +98,26 @@ class AttendanceRecordController extends Controller
      */
     public function update(UpdateAttendanceRecordRequest $request, AttendanceRecord $attendanceRecord)
     {
+        $this->authorize('update', $attendanceRecord);
+
         $validated = $request->validated();
+
+        $clockIn = Carbon::createFromFormat(
+            'Y-m-d H:i:s',
+            $validated['date'] . ' ' . $validated['clock_in']
+        );
+
+        $clockOut = !empty($validated['clock_out'])
+            ? Carbon::createFromFormat(
+                'Y-m-d H:i:s',
+                $validated['date'] . ' ' . $validated['clock_out']
+            )
+            : null;
 
         $attendanceRecord->update([
             'work_date' => $validated['date'],
-            'clock_in' => $validated['clock_in'],
-            'clock_out' => $validated['clock_out'] ?? null,
+            'clock_in' => $clockIn,
+            'clock_out' => $clockOut,
             'note' => $validated['comment'] ?? null,
         ]);
 
@@ -107,6 +134,8 @@ class AttendanceRecordController extends Controller
      */
     public function destroy(AttendanceRecord $attendanceRecord)
     {
+        $this->authorize('delete', $attendanceRecord);
+
         $attendanceRecord->delete();
 
         return response()->noContent();
