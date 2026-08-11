@@ -1,4 +1,9 @@
 services:
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
   nginx:
     image: nginx:1.21.1
     ports:
@@ -27,3 +32,14 @@ services:
     ports:
       - "3306:3306"
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql

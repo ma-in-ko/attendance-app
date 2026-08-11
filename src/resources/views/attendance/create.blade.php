@@ -38,20 +38,20 @@
 
         <form action="{{ route('attendance.break-start') }}" method="POST">
             @csrf
-            <button type="submit" class="attendance__button">休憩入</button>
+            <button type="submit" class="attendance__button start-break">休憩入</button>
         </form>
         @endif
         @if ($status === '休憩中')
 
         <form action="{{ route('attendance.break-end') }}" method="post">
             @csrf
-            <button type="submit" class="attendance__button"> 休憩戻</button>
+            <button type="submit" class="attendance__button end-break"> 休憩戻</button>
         </form>
         @endif
     </div>
 
     @if ($status === '退勤済')
-    <p>おつかれさまでした</p>
+    <p class="clock-out_message">お疲れ様でした。</p>
     @endif
 
 </div>

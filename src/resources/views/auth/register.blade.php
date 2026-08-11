@@ -9,7 +9,7 @@
 <div class="auth">
     <h1 class="auth__title">会員登録</h1>
 
-    <form action="{{ route('register') }}" method="POST">
+    <form action="{{ route('register') }}" method="POST" novalidate>
         @csrf
 
         <div class="auth__form-group">
@@ -21,7 +21,7 @@
                 name="name"
                 value="{{ old('name') }}">
             @error('name')
-            <p>{{ $message }}</p>
+            <p class='error'>{{ $message }}</p>
             @enderror
         </div>
 
@@ -33,8 +33,8 @@
                 id="email"
                 name="email"
                 value="{{ old('email') }}">
-            @error('email')
-            <p>{{ $message }}</p>
+            @error("email")
+            <p class="error">{{ $message }}</p>
             @enderror
         </div>
 
@@ -47,7 +47,7 @@
                 id="password"
                 name="password">
             @error('password')
-            <p>{{ $message }}</p>
+            <p class="error">{{ $message }}</p>
             @enderror
         </div>
 
@@ -61,7 +61,7 @@
                 id="password_confirmation"
                 name="password_confirmation">
             @error('password_confirmation')
-            <p>{{ $message }}</p>
+            <p class="error">{{ $message }}</p>
             @enderror
         </div>
 

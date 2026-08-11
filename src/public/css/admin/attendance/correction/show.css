@@ -1,0 +1,82 @@
+.correction-detail {
+    display: flex;
+    width: 900px;
+    margin: 80px auto;
+    flex-direction: column;
+}
+
+.correction-detail h1 {
+    border-left: 6px solid #000;
+    padding-left: 12px;
+    font-size: 28px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #fff;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,
+td {
+    border-bottom: 1px solid #c7c7c7;
+    padding: 16px;
+}
+
+th {
+    width: 180px;
+    text-align: left;
+    padding-left: 30px;
+    color: #2e2d2d;
+}
+
+td {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+/* ===== 内容配置 ===== */
+
+.correction-detail__content {
+    display: grid;
+    grid-template-columns: 120px 80px 120px;
+    align-items: center;
+}
+
+.correction-detail__box {
+    text-align: left;
+}
+
+.correction-detail__separator {
+    text-align: left;
+}
+
+
+/* ===== button ===== */
+
+.correction-detail__button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.correction-detail__button button {
+    margin-top: 20px;
+    padding: 10px 30px;
+    background: #000;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.correction-detail__button .approved-button {
+    background: #808080;
+    color: #fff;
+    cursor: not-allowed;
+    border: none;
+}
+.error {
+    color: red;
+}

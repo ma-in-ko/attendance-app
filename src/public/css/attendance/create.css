@@ -41,3 +41,18 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.end-break,
+.start-break {
+    border: 1px solid #fff;
+    border-radius: 10px;
+    padding: 8px 30px;
+    background-color:  #fff;
+    color: #000;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.clock-out_message {
+    font-weight: bold;
+}

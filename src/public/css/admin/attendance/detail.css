@@ -1,0 +1,104 @@
+.attendance {
+    display: flex;
+    width: 900px;
+    margin: 80px auto;
+    flex-direction: column;
+}
+
+.attendance h1 {
+    border-left: 6px solid #000;
+    padding-left: 12px;
+    font-size: 28px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #fff;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,
+td {
+    border-bottom: 1px solid #c7c7c7;
+    padding: 16px;
+}
+
+th {
+    width: 180px;
+    text-align: left;
+    padding-left: 30px;
+    color: #737171;;
+}
+
+td {
+    text-align: left;
+    font-weight: bold;
+}
+
+.detail__content,
+.time__content {
+    display: grid;
+    grid-template-columns: 120px 60px 120px;
+    align-items: center;
+}
+
+.name,
+.year,
+.date {
+    padding-left: 20px;
+}
+
+.time::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.time::-webkit-clear-button {
+    display: none;
+}
+
+.time::-webkit-inner-spin-button {
+    display: none;
+}
+
+.time {
+    border: 1px solid #c7c7c7;
+    height: 30px;
+    width: 80px;
+    text-align: center;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+.note {
+    border: 1px solid #c7c7c7;
+    height: 40px;
+    width: 250px;
+    resize: none;
+    padding-left: 20px;
+    font-weight: bold;
+}
+
+.pending {
+    color: red;
+    font-weight: bold;
+}
+
+.attendance__button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.attendance__button button {
+    margin-top: 20px;
+    padding: 10px 30px;
+    background: #000;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.error {
+    color: red;
+}

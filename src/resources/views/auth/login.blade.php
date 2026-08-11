@@ -9,7 +9,7 @@
 <div class="auth">
     <h1 class="auth__title">ログイン</h1>
 
-    <form action="{{ route('login') }}" method="POST">
+    <form action="{{ route('login') }}" method="POST" novalidate>
         @csrf
 
 
@@ -22,7 +22,7 @@
                 name="email"
                 value="{{ old('email') }}">
             @error('email')
-            <p>{{ $message }}</p>
+            <p class="error">{{ $message }}</p>
             @enderror
         </div>
 
@@ -34,14 +34,14 @@
                 id="password"
                 name="password">
             @error('password')
-            <p>{{ $message }}</p>
+            <p class="error">{{ $message }}</p>
             @enderror
         </div>
 
         <button
             class="auth__button"
             type="submit">
-            ログイン
+            ログインする
         </button>
 
     </form>
